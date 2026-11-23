@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Build a curated, single-commit, history-free baseline repository for Experiment A
+# Build a curated, single-commit, history-free baseline repository for Workflow A or B
 # and optionally clone it into isolated, remote-free scientist workspaces:
 #   <dest-root>/codex/<project>
 #   <dest-root>/claude/<project>
@@ -14,6 +14,7 @@ set -euo pipefail
 #     --input-md /path/to/INPUT.md \
 #     --baseline-dir /path/to/baseline \
 #     --project rc-dates \
+#     [--workflow A|B] \
 #     [--dest-root "$HOME"] \
 #     [--baseline-only | --clones-only]
 
@@ -22,6 +23,7 @@ MANIFEST=""
 INPUT_MD=""
 BASELINE_DIR=""
 PROJECT=""
+WORKFLOW="A"
 DEST_ROOT="$HOME"
 MODE="both"
 
@@ -32,11 +34,12 @@ while [[ $# -gt 0 ]]; do
     --input-md) INPUT_MD="$2"; shift 2 ;;
     --baseline-dir) BASELINE_DIR="$2"; shift 2 ;;
     --project) PROJECT="$2"; shift 2 ;;
+    --workflow) WORKFLOW="$2"; shift 2 ;;
     --dest-root) DEST_ROOT="$2"; shift 2 ;;
     --baseline-only) MODE="baseline"; shift ;;
     --clones-only) MODE="clones"; shift ;;
     -h|--help)
-      sed -n '3,19p' "$0"
+      sed -n '3,20p' "$0"
       exit 0
       ;;
     *) echo "Unknown option: $1" >&2; exit 2 ;;
@@ -44,6 +47,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 [[ -n "$BASELINE_DIR" && -n "$PROJECT" ]] || { echo "Missing --baseline-dir or --project" >&2; exit 2; }
+[[ "$WORKFLOW" == "A" || "$WORKFLOW" == "B" ]] || { echo "Invalid --workflow (expected A or B): $WORKFLOW" >&2; exit 2; }
 
 build_baseline() {
   [[ -d "$SOURCE_REPO/.git" ]] || { echo "Not a git repo: $SOURCE_REPO" >&2; exit 1; }
@@ -81,12 +85,13 @@ build_baseline() {
 
   cp "$INPUT_MD" "$BASELINE_DIR/INPUT.md"
 
-  cat > "$BASELINE_DIR/.gitignore" <<'EOF'
+  if [[ "$WORKFLOW" == "A" ]]; then
+    cat > "$BASELINE_DIR/.gitignore" <<'EOF'
 /output/
 .DS_Store
 EOF
 
-  cat > "$BASELINE_DIR/AGENTS.md" <<EOF
+    cat > "$BASELINE_DIR/AGENTS.md" <<EOF
 # Isolated Experiment A workspace — $PROJECT
 
 This is a curated, single-commit baseline exported from \`$PROJECT@$short_sha\` ($commit) for independent editorial reconstruction.
@@ -100,22 +105,59 @@ This is a curated, single-commit baseline exported from \`$PROJECT@$short_sha\` 
 - During reconnaissance (A1), do not edit repository files; write only your assessment to \`output/\`.
 EOF
 
-  cat > "$BASELINE_DIR/CLAUDE.md" <<'EOF'
+    cat > "$BASELINE_DIR/CLAUDE.md" <<'EOF'
 # Experiment A workspace instructions
 
 Read `AGENTS.md` and `INPUT.md` before beginning. Obey all isolation boundaries strictly (no Correspondence Board, no peer workspaces, no parent repository inspection, no prior project memory).
 EOF
 
-  cat > "$BASELINE_DIR/GEMINI.md" <<'EOF'
+    cat > "$BASELINE_DIR/GEMINI.md" <<'EOF'
 # Experiment A workspace instructions
 
 Read `AGENTS.md` and `INPUT.md` before beginning. Obey all isolation boundaries strictly (no Correspondence Board, no peer workspaces, no parent repository inspection, no prior project memory).
 EOF
+  else
+    cat > "$BASELINE_DIR/.gitignore" <<'EOF'
+/output/
+.DS_Store
+renv/library/
+renv/staging/
+.Rhistory
+.RData
+.Rproj.user/
+EOF
+
+    cat > "$BASELINE_DIR/AGENTS.md" <<EOF
+# Isolated Workflow B workspace — $PROJECT
+
+This is a curated, single-commit, remote-free baseline exported from \`$PROJECT@$short_sha\` ($commit) for independent original research and project completion.
+
+## Strict boundaries
+
+- Read \`INPUT.md\` and your active assignment in \`output/\` before beginning.
+- Follow the active round's scope strictly: during project conception (B1), do not edit repository files, install environments, or run code/benchmarks—write only your brief to \`output/\`.
+- Work completely independently. Do not read or consult peer workspaces (\`~/codex/\`, \`~/claude/\`, \`~/gemini/\`), the adviser repository (\`~/work/research-advisor\`), or unrelated local repositories.
+- **Do not query or post to any Correspondence Board** (via MCP or otherwise), read prior chat transcripts, or rely on cross-workspace memory about this project.
+- Do not add Git remotes or push anywhere during independent rounds.
+EOF
+
+    cat > "$BASELINE_DIR/CLAUDE.md" <<'EOF'
+# Workflow B workspace instructions
+
+Read `AGENTS.md`, `INPUT.md`, and your active assignment in `output/` before beginning. Obey all isolation boundaries strictly (no Correspondence Board, no peer workspaces, no adviser repository inspection, no cross-workspace memory, no Git remotes or pushes).
+EOF
+
+    cat > "$BASELINE_DIR/GEMINI.md" <<'EOF'
+# Workflow B workspace instructions
+
+Read `AGENTS.md`, `INPUT.md`, and your active assignment in `output/` before beginning. Obey all isolation boundaries strictly (no Correspondence Board, no peer workspaces, no adviser repository inspection, no cross-workspace memory, no Git remotes or pushes).
+EOF
+  fi
 
   git -C "$BASELINE_DIR" init -q -b main
   git -C "$BASELINE_DIR" add -A
   git -C "$BASELINE_DIR" -c commit.gpgsign=false commit -q \
-    -m "Curated Experiment A baseline from $PROJECT@$short_sha"
+    -m "Curated Workflow $WORKFLOW baseline from $PROJECT@$short_sha"
 
   echo "Built curated baseline ($count manifest files) at $BASELINE_DIR"
   echo "Baseline commit: $(git -C "$BASELINE_DIR" rev-parse HEAD) (exported from $commit)"

@@ -37,8 +37,9 @@ Choose the A2 arrangement based on real evidence rather than ritual: three indep
 
 - A necessary qualification must still constrain the claim it qualifies; relegating it to a supplement is not always enough. Where source prose contradicts a table or ledger, flag the exact discrepancy rather than silently polishing it away or launching a scientific audit.
 
-## Stage 3 — Independent cross-critique and final integration (A3+)
+## Stage 3 — Independent cross-critique, fresh primary writer and fidelity audit (A3+)
 
-- Freeze A2 drafts before cross-review. Each scientist independently critiques the other drafts on scientific fidelity, coverage, clarity, argument and pacing—tying every critique to evidence rather than style preferences.
-- Select one coherent narrative backbone rather than stitching paragraphs from all three drafts (which recreates accretive prose). Incorporate specific evidence-backed improvements, re-attach any automated build/ledger checks once on the selected manuscript, and move swiftly to collaborator review.
+- Freeze A2 drafts before cross-review. Each scientist can independently critique the other drafts on scientific fidelity, coverage, clarity, argument and pacing—tying every critique to evidence rather than style preferences.
+- **Fresh primary writer option (preferred when voice matters):** Rather than picking one scientist draft directly or patchwork-merging paragraphs across drafts (which recreates accretive prose), commission a **fresh primary writer session** (e.g. a new Gemini 4 Neon session separate from both the adviser and the three scientists) working closely with the lead scientist. That writer selects one coherent narrative spine, absorbs the best framing moves, tables and factual catches from the three A2 drafts and critiques, and **composes the final prose fresh in one unified voice from top to bottom**.
+- **Scientists as final fidelity critics:** Once the primary writer's draft exists, hand it back to the three scientists specifically for a **scientific accuracy, coverage and boundary audit** (not style nitpicking). Re-attach automated ledger/build checks once on the final text, and move swiftly to collaborator review.
 - Do not let speculative polish defer dissemination indefinitely.

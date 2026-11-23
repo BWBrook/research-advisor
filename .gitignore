@@ -1,4 +1,9 @@
-# Untracked local data and outputs (fetch or regenerate by script)
+# Machine-specific paths, staging snapshots and local data
+/local.json
+/projects/*/local.json
+/projects/*/work/
+/work/
+/tmp/
 local/
 outputs/
 
@@ -27,6 +32,8 @@ renv/staging/
 _targets/
 *_cache/
 
-# Operating systems
+# Editor and operating-system debris
 .DS_Store
 Thumbs.db
+.vscode/
+.idea/

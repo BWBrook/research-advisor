@@ -1,0 +1,30 @@
+{
+  "project": "<project-slug>",
+  "workflow": "A",
+  "source_repo": null,
+  "source_commit": null,
+  "curated_baseline": null,
+  "curated_baseline_commit": null,
+  "input_packet": null,
+  "manifest": null,
+  "participants": {
+    "codex": {
+      "model": "gpt-6.2-astra",
+      "harness": "codex",
+      "workspace": null,
+      "rounds": {}
+    },
+    "claude": {
+      "model": "fable",
+      "harness": "claude",
+      "workspace": null,
+      "rounds": {}
+    },
+    "gemini": {
+      "model": "gemini-4-carbon-high",
+      "harness": "agy",
+      "workspace": null,
+      "rounds": {}
+    }
+  }
+}

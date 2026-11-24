@@ -15,6 +15,7 @@ set -euo pipefail
 #     --baseline-dir /path/to/baseline \
 #     --project rc-dates \
 #     [--workflow A|B] \
+#     [--resources-dir /path/to/shared-resources] \
 #     [--dest-root "$HOME"] \
 #     [--baseline-only | --clones-only]
 
@@ -24,6 +25,7 @@ INPUT_MD=""
 BASELINE_DIR=""
 PROJECT=""
 WORKFLOW="A"
+RESOURCES_DIR=""
 DEST_ROOT="$HOME"
 MODE="both"
 
@@ -35,11 +37,12 @@ while [[ $# -gt 0 ]]; do
     --baseline-dir) BASELINE_DIR="$2"; shift 2 ;;
     --project) PROJECT="$2"; shift 2 ;;
     --workflow) WORKFLOW="$2"; shift 2 ;;
+    --resources-dir) RESOURCES_DIR="$2"; shift 2 ;;
     --dest-root) DEST_ROOT="$2"; shift 2 ;;
     --baseline-only) MODE="baseline"; shift ;;
     --clones-only) MODE="clones"; shift ;;
     -h|--help)
-      sed -n '3,20p' "$0"
+      sed -n '3,21p' "$0"
       exit 0
       ;;
     *) echo "Unknown option: $1" >&2; exit 2 ;;
@@ -88,6 +91,7 @@ build_baseline() {
   if [[ "$WORKFLOW" == "A" ]]; then
     cat > "$BASELINE_DIR/.gitignore" <<'EOF'
 /output/
+/resources/
 .DS_Store
 EOF
 
@@ -103,6 +107,7 @@ This is a curated, single-commit baseline exported from \`$PROJECT@$short_sha\` 
 - Work independently. Do not read or consult other scientists' workspaces, branches or reports.
 - **Do not query the Correspondence Board** (via MCP or otherwise), read prior chat transcripts, inspect the parent repository, or rely on prior project memory about this study.
 - During reconnaissance (A1), do not edit repository files; write only your assessment to \`output/\`.
+- If \`resources/\` is present, treat its files as read-only reference material (e.g. paper PDFs or frozen data); never modify or commit them.
 EOF
 
     cat > "$BASELINE_DIR/CLAUDE.md" <<'EOF'
@@ -119,6 +124,7 @@ EOF
   else
     cat > "$BASELINE_DIR/.gitignore" <<'EOF'
 /output/
+/resources/
 .DS_Store
 renv/library/
 renv/staging/
@@ -139,6 +145,7 @@ This is a curated, single-commit, remote-free baseline exported from \`$PROJECT@
 - Work completely independently. Do not read or consult peer workspaces (\`~/codex/\`, \`~/claude/\`, \`~/gemini/\`), the adviser repository (\`~/work/research-advisor\`), or unrelated local repositories.
 - **Do not query or post to any Correspondence Board** (via MCP or otherwise), read prior chat transcripts, or rely on cross-workspace memory about this project.
 - Do not add Git remotes or push anywhere during independent rounds.
+- If \`resources/\` is present, treat its files as read-only reference material (e.g. paper PDFs or frozen datasets); never modify or commit them.
 EOF
 
     cat > "$BASELINE_DIR/CLAUDE.md" <<'EOF'
@@ -165,6 +172,11 @@ EOF
 
 build_clones() {
   [[ -d "$BASELINE_DIR/.git" ]] || { echo "Missing baseline git repo: $BASELINE_DIR" >&2; exit 1; }
+  if [[ -n "$RESOURCES_DIR" ]]; then
+    [[ -d "$RESOURCES_DIR" ]] || { echo "Missing resources dir: $RESOURCES_DIR" >&2; exit 1; }
+    find "$RESOURCES_DIR" -type f -exec chmod a-w {} +
+    echo "Locked shared resource files read-only (chmod a-w): $RESOURCES_DIR"
+  fi
   for family in codex claude gemini; do
     local target="$DEST_ROOT/$family/$PROJECT"
     if [[ -e "$target" ]]; then
@@ -179,6 +191,13 @@ build_clones() {
     git clone -q "$BASELINE_DIR" "$target"
     git -C "$target" remote remove origin
     mkdir -p "$target/output"
+    if [[ -n "$RESOURCES_DIR" ]]; then
+      mkdir -p "$target/resources"
+      if ! cp -al "$RESOURCES_DIR/." "$target/resources/" 2>/dev/null; then
+        echo "Note: hardlink copy (cp -al) unavailable for $target/resources; falling back to standard copy" >&2
+        cp -R -p "$RESOURCES_DIR/." "$target/resources/"
+      fi
+    fi
     echo "Created isolated remote-free clone: $target"
   done
 }

@@ -57,6 +57,14 @@ The adviser runs from this repository. The three independent scientists (Codex, 
   - If off-laptop backup or multi-machine sync is wanted, the **adviser** (or user) can mirror frozen round snapshots to an optional private bare remote *after* each round closes—never shared live among scientists during independent work.
 - `scripts/build-isolated-clones.sh` implements this curated snapshot-and-clone step from a plain manifest file.
 
+**Shared read-only resources (reference PDFs, bulky frozen datasets or model outputs):**
+
+- Keep small, project-owned inputs (figures, summary CSVs, bibliography, code) copied directly into the curated baseline commit.
+- For **copyrighted third-party files** (full-text PDFs of cited papers) or **large frozen datasets/outputs** that should neither be committed to Git nor triplicated on disk, keep one master folder outside Git (e.g. `~/shared/<slug>/papers/` or `~/shared/<slug>/data/`), lock its *files* read-only (`find ~/shared/<slug> -type f -exec chmod a-w {} +`—keeping the master directory writable so you can add files later), and hardlink it into each clone's gitignored `resources/` folder:
+  - Pass `--resources-dir ~/shared/<slug>` to `scripts/build-isolated-clones.sh`, or attach to existing clones with:
+    `for f in codex claude gemini; do mkdir -p ~/$f/<slug>/resources && cp -al ~/shared/<slug>/. ~/$f/<slug>/resources/; done`
+  - **Why hardlinks (`cp -al`) beat both symlinks and full copies:** (1) 1× disk usage on Linux/WSL ext4 (no triplication of GB-scale outputs or PDFs); (2) files sit inside each scientist's own workspace at `resources/`, avoiding desktop multi-root setup or `--add-dir` sandbox friction; (3) `cp -al` creates separate directory inodes per clone while sharing only read-only file inodes, so nothing written inside one clone's `resources/` can leak to peers or mutate shared files; (4) `/resources/` is gitignored, keeping third-party PDFs and large binaries out of Git. (On macOS APFS or across filesystems where GNU `cp -al` is unavailable, `cp -cR` or `build-isolated-clones.sh`'s copy fallback handles it automatically.)
+
 **Context and memory hygiene:**
 
 - **Forbid any shared discussion or correspondence board** in every independent scientist prompt, and disable MCP servers at the CLI layer where supported (Section 4).

@@ -22,7 +22,7 @@ Compare the three independent conceptions before shared deliberation, then write
 
 ## Stage 2 — Independent autonomous execution (B2)
 
-- Give each scientist the same frozen input/data packet and its own remote-free workspace.
+- Give each scientist the same frozen input/data packet and its own remote-free workspace. For third-party reference PDFs or bulky frozen datasets/model outputs, keep one read-only master folder (`~/shared/<slug>/`, files `chmod a-w`) and hardlink it into each clone's gitignored `resources/` directory via `--resources-dir` (`docs/operating-notes.md` §3)—zero disk triplication, zero Git/copyright leaks, and zero cross-scientist leakage.
 - Each determines its own methods, abstractions and internal decomposition, resolving ordinary implementation choices autonomously while keeping a concise trail of consequential assumptions, failed approaches and limitations.
 - Bring back only true objective changes or unavailable essential inputs. Never inspect peer workspaces, shared discussion boards or prior private logs.
 

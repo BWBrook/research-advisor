@@ -7,6 +7,7 @@
   "curated_baseline_commit": null,
   "input_packet": null,
   "manifest": null,
+  "shared_resources": null,
   "participants": {
     "codex": {
       "model": "gpt-6.2-astra",

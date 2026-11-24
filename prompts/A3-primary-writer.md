@@ -29,4 +29,5 @@ You are the **fresh primary writer** working directly with the lead scientist to
 ## Boundaries & collaboration
 
 - **Do not query any Correspondence Board**, inspect the parent scientific repository, read `git log`, or read excluded renderings. Do not edit source baseline files or `grist/`.
-- **Execute the full first draft autonomously** (verifying your own Pandoc word counts and citation keys before reporting), then present a concise editorial note on your key choices so you and the lead scientist can refine it directly before freezing it for the scientists' final scientific-fidelity audit.
+- **Execute the full first draft autonomously** (verifying your own Pandoc word counts and citation keys before reporting), then run an `audit-ai-writing` pass (`--genre scientific` scanner + manual cluster check: trim excess em dashes, repeated `X, not Y` / `rather than` antitheses, stacked triads, copulative avoidance and aphoristic closers while preserving exact terms of art and scientific meaning).
+- Present a concise editorial note on your key choices so you and the lead scientist can refine the draft (using `scrivmark` for inline edits and margin comments where available) before freezing it for the scientists' final scientific-fidelity audit.

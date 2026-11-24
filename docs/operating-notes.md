@@ -123,6 +123,11 @@ Keep submissions frozen before comparison or review. Never rely on a scientist's
 
 **Skip redundant intermediate cross-critique when a direct adviser audit suffices.** If the drafts are heading into a fresh primary writer session (`~/writer/<slug>`), asking the three scientists to cross-critique each other's intermediate drafts burns attention on prose you are about to replace. Reserve the three scientists' critical pass for a **final scientific-fidelity audit** of the primary writer's unified manuscript. (In Workflow B original research, independent scientist cross-critique of completed investigations remains valuable because code and inference discrepancies must be adjudicated before writing.)
 
+**Default finishing toolchain for Workflow A manuscripts:**
+- **De-AI prose check (`audit-ai-writing`):** Run the bundled `--genre scientific` scanner plus a manual cluster check on the primary writer's draft before the lead scientist reads—distinguishing genuine tells (em-dash clusters, repeated `X, not Y` / `rather than` antitheses, repeated `First/Second/Third` scaffolding, copulative avoidance) from domain terms of art.
+- **Human line-edit loop (`scrivmark`):** Use `scrivmark` on a tracked branch (inside `~/writer/<slug>` or the target repo) for the lead scientist's inline edits and margin comments, letting the primary writer process and respond to each item cleanly.
+- **Build and living-paper sync (`makedoc` + `living-paper`):** Once fidelity-audited and moved back to the scientific repository with ledger bindings restored, build PDF/DOCX outputs and verify checks with `makedoc`. In living-paper repos, reserve the fresh primary writer for human-facing products (`main.md`, `brief.md`) and assign the agent-facing index (`for-agents.md`), claims ledger sync and `supplement.md` alignment to the scientists.
+
 Do not average incompatible scientific claims or patchwork-stitch favourite paragraphs across drafts (which recreates accretive prose). Pick one coherent structural spine, compose fresh in one voice, apply evidence-backed fidelity fixes, and move to collaborator review or release.
 
 ## 7. Keep the process light

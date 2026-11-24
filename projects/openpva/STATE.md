@@ -13,9 +13,9 @@ Updated: 24 November 2026, Australia/Hobart. **Round B1 complete; compact scient
 
 | Family | Model | Workspace | B1 status | B2 status | B2 report path |
 |---|---|---|---|---|---|
-| OpenAI (Codex Desktop) | `gpt-6.2-astra` | `~/codex/openpva` | Complete (`dab77571…`, 1,360 w) | **Staged — ready to launch** | `~/codex/openpva/output/B2-report.md` |
-| Anthropic (Claude Code Desktop) | `Fable` (`fable`) | `~/claude/openpva` | Complete (`733109a7…`, 1,542 w) | **Staged — ready to launch** | `~/claude/openpva/output/B2-report.md` |
-| Google (Antigravity Desktop, separate window) | `Gemini 4 Carbon (High)` (`gemini-4-carbon-high`) | `~/gemini/openpva` | Complete (`c5d9dc9b…`, 1,525 w) | **Staged — ready to launch** | `~/gemini/openpva/output/B2-report.md` |
+| OpenAI (Codex Desktop) | `gpt-6.2-astra` | `~/codex/openpva` | Complete (`dab77571…`, 1,360 w) | **Running** (launched 24 Nov) | `~/codex/openpva/output/B2-report.md` |
+| Anthropic (Claude Code Desktop) | `Fable` (`fable`) | `~/claude/openpva` | Complete (`733109a7…`, 1,542 w) | **Running** (launched 24 Nov) | `~/claude/openpva/output/B2-report.md` |
+| Google (Antigravity Desktop, separate window) | `Gemini 4 Carbon (High)` (`gemini-4-carbon-high`) | `~/gemini/openpva` | Complete (`c5d9dc9b…`, 1,525 w) | **Running** (launched 24 Nov) | `~/gemini/openpva/output/B2-report.md` |
 
 ## Settled decisions
 
@@ -24,7 +24,7 @@ Updated: 24 November 2026, Australia/Hobart. **Round B1 complete; compact scient
   - **Scientific direction:** Unbundle the PVA "package effect" via a pre-registered within-engine factorial contrasting *naive software swap* vs. *expectation-matched* structural semantics (including the analytically anchored $s = ab$ release-timing split) against parametric vital-rate uncertainty, paired with a CRAN/r-universe-ready `OpenPVA` release and (post-adjudication) an *MEE*/*Ecography* + living-paper trilogy.
   - **Archetype scope:** Two GAPPS-lineage archetypes grounded in-repo (Grizzly + Lord Howe Island Woodhen, with conditional post-1980 Woodhen trajectory check only if verifiable from primary sources; a 3rd published species is optional stretch).
   - **Delegation boundary (`operating-notes.md` §0):** Profile-first hard gates (`< 60 s / < 2 GB` RSS on 1,000 × 40-yr pedigree-enabled Woodhen runs, `R >= 4.1.0`, serial/fork/PSOCK RNG parity, missing core PVA processes, multi-year & exact small-cohort extinction oracles, cohort fault-injection accounting, dense-matrix pedigree `< 1e-13`, clean `R CMD check --as-cran --no-manual`), leaving internal architecture unconstrained.
-  - **Stage boundary:** Final manuscript / lay brief / agent guide drafting is deferred to Stage B3+ after B2 freeze, independent cross-critique, and adjudication.
+- **24 Nov 2026 (North Star clarification — tool-first "modern GAPPS"):** Barry clarified that the North Star is **OpenPVA as the modern GAPPS**—a clear, flexible, modular, realistic R PVA toolkit that conservation biologists and their AI agents actively choose to use—developed iteratively through case-study stress tests rather than chasing a primary research paper. Any future paper is secondary and likely a concise **Software Note (*Ecography*)** or **R package / Application note (*MEE*)** using event-sequencing examples as illustration. B2 runs continue undisturbed (they already focus heavily on speed, core PVA processes, oracles, CRAN-readiness, and real-case stress tests, with no manuscript drafting); B3 adjudication will weight **tool ergonomics, clarity, modularity, performance, and verification** first, treating the factorial/sequencing runs as stress tests and showcase demos.
 
 ## Verified on disk (24 Nov 2026)
 

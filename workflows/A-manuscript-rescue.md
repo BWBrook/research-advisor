@@ -27,19 +27,20 @@ Choose the A2 arrangement based on real evidence rather than ritual: three indep
 
 ## Stage 2 — Fresh composition with coverage protection (A2)
 
-- Specify **outcomes, hard scientific bounds, audience and length ceiling**—not internal workflows or wording templates (`docs/operating-notes.md` §0).
+- Use [A2-fresh-draft.md](../prompts/A2-fresh-draft.md) to specify **outcomes, hard scientific bounds, audience and length ceiling**—not internal workflows or wording templates (`docs/operating-notes.md` §0). Supply any factual clarifications or lifted style-policing rules neutrally and identically to all three scientists without leaking peer interpretations.
 - Defer repository build markup (e.g. inline claim-binding spans) until final integration so writers focus cleanly on narrative clarity and scientific fidelity.
-- Protect content coverage with a compact scientific-unit table inside each submission (not a sentence-by-sentence mapping):
+- Protect content coverage with a compact scientific-unit table inside each submission (`output/A2-coverage.md`), not a sentence-by-sentence mapping:
 
 | Source location / Claim ID | Content that must remain | Destination in new paper/package | Material change or unresolved issue |
 |---|---|---|---|
 | Result, method, figure or citation | Claim, value, qualification or reproducibility requirement | Section, figure, table or supplement | Only what needs attention |
 
 - A necessary qualification must still constrain the claim it qualifies; relegating it to a supplement is not always enough. Where source prose contradicts a table or ledger, flag the exact discrepancy rather than silently polishing it away or launching a scientific audit.
+- **Adviser audit before Stage 3:** Read all three drafts directly and run an apples-to-apples check on Pandoc word counts, citation-key diffs (especially co-author works), 8-gram freshness overlap, anonymity/markup hygiene, and primary-CSV spot-checks (`docs/operating-notes.md` §6).
 
-## Stage 3 — Independent cross-critique, fresh primary writer and fidelity audit (A3+)
+## Stage 3 — Fresh primary writer (`~/writer/<slug>`) and final fidelity audit (A3–A4)
 
-- Freeze A2 drafts before cross-review. Each scientist can independently critique the other drafts on scientific fidelity, coverage, clarity, argument and pacing—tying every critique to evidence rather than style preferences.
-- **Fresh primary writer option (preferred when voice matters):** Rather than picking one scientist draft directly or patchwork-merging paragraphs across drafts (which recreates accretive prose), commission a **fresh primary writer session** (e.g. a new Gemini 4 Neon session separate from both the adviser and the three scientists) working closely with the lead scientist. That writer selects one coherent narrative spine, absorbs the best framing moves, tables and factual catches from the three A2 drafts and critiques, and **composes the final prose fresh in one unified voice from top to bottom**.
-- **Scientists as final fidelity critics:** Once the primary writer's draft exists, hand it back to the three scientists specifically for a **scientific accuracy, coverage and boundary audit** (not style nitpicking). Re-attach automated ledger/build checks once on the final text, and move swiftly to collaborator review.
+- **Skip pre-writer scientist cross-critique when the adviser's A2 audit already surfaces the factual catches and structural trade-offs.** Save the three scientists' critical energy for auditing the actual deliverable going to collaborators. (If deep substantive ambiguity remains across drafts, run a bounded cross-critique first.)
+- **Fresh primary writer (`~/writer/<slug>`):** Stage a dedicated remote-free writer workspace with `scripts/stage-writer-workspace.sh` (cloning the curated baseline and placing frozen scientist drafts + `adviser-a2-synthesis.md` into read-only, gitignored `grist/`), keeping `~/{codex,claude,gemini}/<slug>` untouched for the final audit. Commission a fresh primary writer session using [A3-primary-writer.md](../prompts/A3-primary-writer.md), working directly with the lead scientist. Lock the macro-spine and hard invariants; leave voice, title, table design and non-core citation curation to the writer + lead scientist. Compose **fresh from top to bottom in one unified voice**—never patchwork-stitching paragraphs across drafts.
+- **Stage 4 — Scientists as final fidelity critics:** Once the lead scientist and primary writer sign off on `output/FINAL-main.md` and `output/FINAL-figures.md`, freeze them and send them back to the three scientists specifically for a **scientific accuracy, numerical fidelity, estimand-boundary and coverage audit** (not style committees). Re-attach automated ledger/build markup once on the final text, and move swiftly to collaborator review.
 - Do not let speculative polish defer dissemination indefinitely.

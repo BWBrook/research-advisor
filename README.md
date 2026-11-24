@@ -32,8 +32,8 @@ A lightweight harness for completing scientific research and manuscript reconstr
 - [AGENTS.md](AGENTS.md) (`CLAUDE.md`, `GEMINI.md`): adviser role, delegation boundary and isolation rules.
 - [docs/operating-notes.md](docs/operating-notes.md): practical mechanics—curated clone isolation, desktop-first launch workflow, CLI fallbacks, and evidence comparison.
 - [workflows/](workflows/): project-agnostic playbooks (`A-manuscript-rescue.md`, `B-original-research.md`).
-- [prompts/](prompts/): reusable opening assignment templates (`adviser-start.md`, `A1-editorial-reconnaissance.md`, `B1-project-conception.md`). Later prompts are written adaptively from actual outputs.
-- [scripts/build-isolated-clones.sh](scripts/build-isolated-clones.sh): manifest-driven builder for single-commit, remote-free scientist clones (including PNG previews for PDF figures).
+- [prompts/](prompts/): reusable assignment templates (`adviser-start.md`, `A1-editorial-reconnaissance.md`, `A2-fresh-draft.md`, `A3-primary-writer.md`, `B1-project-conception.md`). Adapt each stage to actual outputs rather than running a rigid script.
+- [scripts/](scripts/): manifest-driven isolated clone builder ([build-isolated-clones.sh](scripts/build-isolated-clones.sh), with optional hardlinked read-only `--resources-dir`) and primary-writer workspace stager ([stage-writer-workspace.sh](scripts/stage-writer-workspace.sh) for `~/writer/<slug>` with read-only `grist/`).
 - [projects/](projects/): self-contained per-project folders (`STATE.md`, `brief.md`, plus gitignored `local.json` and `work/`). See [`projects/rc-dates/`](projects/rc-dates/) for our live Workflow A proof-of-concept.
 - [context/](context/): origin rationale ([briefing.md](context/briefing.md)) and discussion archive ([conversation.md](context/conversation.md)).
 

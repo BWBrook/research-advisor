@@ -31,7 +31,7 @@ Compare the three independent conceptions before shared deliberation, then write
 - Freeze submitted investigations. Each scientist independently critiques the other two, tying criticisms to reproducible discrepancies or evidence.
 - Investigate material discrepancies directly; do not average incompatible claims into compromise or pick whichever story looks cleanest. Remember that models sharing training data can share errors—agreement is consistency, not scientific proof.
 - Separate **scientific integration** from **code integration**: selecting one maintained implementation and keeping another as an independent verification check is often cleaner than merging three architectures.
-- Only after the scientific account is stable, construct the final manuscript afresh from the accepted evidence, figures, limitations and unresolved issues (Workflow A principles apply to that final communication stage).
+- Only after the scientific account is stable, stage a dedicated fresh-writer workspace (`~/writer/<slug>` via `scripts/stage-writer-workspace.sh`) and compose the final manuscript afresh from the accepted evidence, figures, limitations and unresolved issues—then use the three scientists for a final scientific-fidelity audit (see [Workflow A](A-manuscript-rescue.md) Stage 3–4).
 
 ## Post-pilot reflection
 

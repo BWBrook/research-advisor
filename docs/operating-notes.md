@@ -65,6 +65,12 @@ The adviser runs from this repository. The three independent scientists (Codex, 
     `for f in codex claude gemini; do mkdir -p ~/$f/<slug>/resources && cp -al ~/shared/<slug>/. ~/$f/<slug>/resources/; done`
   - **Why hardlinks (`cp -al`) beat both symlinks and full copies:** (1) 1× disk usage on Linux/WSL ext4 (no triplication of GB-scale outputs or PDFs); (2) files sit inside each scientist's own workspace at `resources/`, avoiding desktop multi-root setup or `--add-dir` sandbox friction; (3) `cp -al` creates separate directory inodes per clone while sharing only read-only file inodes, so nothing written inside one clone's `resources/` can leak to peers or mutate shared files; (4) `/resources/` is gitignored, keeping third-party PDFs and large binaries out of Git. (On macOS APFS or across filesystems where GNU `cp -al` is unavailable, `cp -cR` or `build-isolated-clones.sh`'s copy fallback handles it automatically.)
 
+**Dedicated primary-writer workspace (`~/writer/<slug>`):**
+
+- When using a **fresh primary writer** to compose the final manuscript (in Workflow A after scientist drafts, or at the end of Workflow B once the science settles), stage a dedicated, remote-free clone at `~/writer/<slug>` using `scripts/stage-writer-workspace.sh`.
+- Keeping the writer separate from `~/{codex,claude,gemini}/<slug>` leaves all three scientist clones clean and intact for the **final scientific-fidelity audit** on the finished manuscript.
+- Place frozen scientist drafts and the adviser's verified audit synthesis inside a gitignored, read-only (`chmod a-w`) `grist/` directory inside `~/writer/<slug>`, alongside the curated primary evidence and `output/ASSIGNMENT-WRITE.md`. This gives the fresh writer full visual and textual context in one desktop window with zero cross-workspace friction.
+
 **Context and memory hygiene:**
 
 - **Forbid any shared discussion or correspondence board** in every independent scientist prompt, and disable MCP servers at the CLI layer where supported (Section 4).
@@ -107,13 +113,17 @@ Register each workspace and per-round output path in `projects/<slug>/local.json
 
 Read completed outputs directly from disk and verify that they answer the assigned stage—do not infer completion from a branch name or file existence alone. If one scientist asks a factual input question, resolve it from the record and supply any material input correction equally to all three scientists without relaying the first scientist's interpretation.
 
-## 6. Compare, cross-review and decide
+## 6. Compare, audit and decide
 
-Keep first submissions frozen before cross-review. Compare them directly first with a compact side-by-side table: proposed framing/approach, unique catches, fidelity gaps, and the real decision now required.
+Keep submissions frozen before comparison or review. Never rely on a scientist's self-reported checks alone—for manuscript rounds (A2), run a fast apples-to-apples adviser audit across all three drafts and the baseline:
+- **Word counts** on one identical Pandoc `--citeproc` plain-text whitespace pipeline (bibliography suppressed), checking both Abstract and total (body + tables + declarations + captions).
+- **Citation-key resolution and diff** against the project bibliography and baseline—specifically flagging any dropped co-author or core methodological citations and any unverified keys.
+- **Freshness check** (e.g. 8-word n-gram overlap against baseline body text) to confirm genuine fresh composition rather than light patching, plus a sweep for stray build markup or anonymity leaks.
+- **Primary-evidence spot-checks** against source CSVs/tables whenever two drafts disagree on a number, qualifier, or denominator (in the `rc-dates` pilot, this caught a double-counted simulation row total and verified a missing all-date comparator directly from CSV).
 
-For independent cross-critique, give each scientist the same frozen candidates and ask for written evidence-linked critiques before any open exchange. Keep criticisms proportionate: clever nonessential suggestions need not block delivery.
+**Skip redundant intermediate cross-critique when a direct adviser audit suffices.** If the drafts are heading into a fresh primary writer session (`~/writer/<slug>`), asking the three scientists to cross-critique each other's intermediate drafts burns attention on prose you are about to replace. Reserve the three scientists' critical pass for a **final scientific-fidelity audit** of the primary writer's unified manuscript. (In Workflow B original research, independent scientist cross-critique of completed investigations remains valuable because code and inference discrepancies must be adjudicated before writing.)
 
-Do not average incompatible scientific claims or stitch together favourite paragraphs from three different drafts (which recreates accretive prose). Select one coherent backbone, apply specific evidence-backed improvements, and move to collaborator review or release.
+Do not average incompatible scientific claims or patchwork-stitch favourite paragraphs across drafts (which recreates accretive prose). Pick one coherent structural spine, compose fresh in one voice, apply evidence-backed fidelity fixes, and move to collaborator review or release.
 
 ## 7. Keep the process light
 

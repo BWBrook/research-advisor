@@ -27,5 +27,14 @@
       "workspace": null,
       "rounds": {}
     }
+  },
+  "primary_writer": {
+    "model": "gemini-4-neon-xhigh",
+    "harness": "antigravity",
+    "workspace": null,
+    "grist_dir": null,
+    "prompt": null,
+    "outputs": [],
+    "status": null
   }
 }

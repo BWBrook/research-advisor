@@ -1,50 +1,56 @@
 # Current state — OpenPVA (Workflow B)
 
-Updated: 25 November 2026, Australia/Hobart. **Round B2 verified & frozen; lean read-only Round B3 cross-critique staged identically across all three workspaces.**
+Updated: 25 November 2026, Australia/Hobart. **Round B3 cross-critique complete, frozen, and independently verified on disk. Unanimous 3-for-3 backbone consensus on `candidate-claude` (`OpenPVA 2.0.0`, pure base R) subject to a crisp, verified hardening checklist before landing onto `BWBrook/OpenPVA`.**
 
 - **Workflow:** B — Original research / scientific-software completion from a partially developed repository
 - **Adviser:** Gemini 4 Neon (separate from the three independent scientists)
 - **Source repository:** `BWBrook/OpenPVA` (public GitHub, MIT license)
 - **Common source baseline:** commit `89b34eeaae608a39b9c040fe8e9f7af217d9ab47` (`89b34ee`, 19 Nov 2026)
-- **Curated single-commit baseline:** commit `ed0178c1027e20013259c926eab93cbd1dbf48a7` (`505 PASS`, `79.2 s` on host R 4.6.2)
+- **Curated single-commit baseline:** commit `ed0178c1027e20013259c926eab93cbd1dbf48a7` (`505 PASS`, `79.2 s`)
 - **Active Charter:** [charter.md](charter.md) (adopted 24 Nov 2026)
 
-## Scientists — Verified Round B2 Summary (25 Nov 2026)
+## Scientists — Verified B1–B3 Summary
 
-| Family | Model | Frozen B2 commit | Package & LOC | Independent `R CMD check --as-cran` | Independent scaling gate (1,000 × 40-yr pedigree Woodhen) |
-|---|---|---|---|---|---|
-| **OpenAI (Codex)** | `gpt-6.2-astra` | `154d329` | `OpenPVA 1.1.0` — 5,052 R + 765 C++ (`src/cohort.cpp`); two-engine split (`process_core.R` untouched + fixed-schema C++ `cohort_program()`); `Imports: codetools, dplyr, tibble` | **0 err / 0 warn / 2 NOTEs** (`550 PASS`, 85.0 s; examples OK; also tested on real R 4.1.0) | **4.14 s / 151 MiB** tree RSS (1 core, `cohort_program` C++, `N ≈ 125`) |
-| **Anthropic (Claude)** | `Fable 5.2` | `f6559e9` | **`OpenPVA 2.0.0` — 2,780 R, 0 compiled code**; unified columnar pure-base-R engine, lazy in-place living-only kinship store; `Imports: parallel, stats, utils` only | **0 err / 0 warn / 1 NOTE** (New submission only; `726 PASS`, 47.3 s; examples OK) | **15.48 s / 961 MiB** tree RSS (8 fork workers, **`strict` validation**, `inst/examples/woodhen`, `N ≈ 187`) |
-| **Google (Gemini)** | `Gemini 4 Carbon High` | `14fa2f7` | `OpenPVA 1.0.1` — 7,406 R + 838 C99 (`src/openpva_c.c`); unified backwards-compatible list+columnar engine + ancestor-compressed BFS pedigree; `Imports: parallel, stats, tibble, tools, utils` | **0 err / 0 warn / 2 NOTEs** (`589 PASS`, 98.6 s; examples NONE) | **22.30 s / 1,251 MiB** true tree RSS (8 fork workers, `fast` validation, `N_final ≈ 274`; report's `144.4 MiB` was parent-only `VmHWM`) |
+| Family | Model | B2 commit | B2 verified check & gate | B3 critique |
+|---|---|---|---|---|
+| **OpenAI (Codex)** | `gpt-6.2-astra` | `154d329` (`v1.1.0`, 5,052 R + 765 C++) | 0 err / 0 warn / 2 NOTEs (`550 PASS`, 85.0 s); `4.14 s / 151 MiB` (C++ `cohort_program`) | Complete & frozen (1,794 w); 4 live reproducers |
+| **Anthropic (Claude)** | `Fable 5.2` | `f6559e9` (`v2.0.0`, 2,780 R, base R only) | 0 err / 0 warn / **1 NOTE** (`726 PASS`, 47.3 s); `15.48 s / 961 MiB` (`strict`, 8 fork) | Complete & frozen (1,722 w); 10 live reproducers |
+| **Google (Gemini)** | `Gemini 4 Carbon High` | `14fa2f7` (`v1.0.1`, 7,406 R + 838 C99) | 0 err / 0 warn / 2 NOTEs (`589 PASS`, 98.6 s); `22.30 s / 1,251 MiB` (`fast`, 8 fork) | Complete & frozen (1,877 w); 2 live reproducer batches |
 
-## Key B2 findings verified on disk
+## B3 Adjudication (independently reproduced on disk, 25 Nov 2026)
 
-- **Why Codex took 32 min vs. Claude/Gemini 15–18 h:** Codex did not stop early (it ran 444,020 trajectories + replay + real R 4.1.0 check + verified 1995/1999–2001 Woodhen historical check), but achieved speed by leaving `OpenPVA`'s general `pva_process()` engine untouched and building a separate fixed-schema C++ simulator (`cohort_program()`). Claude rebuilt the unified package in pure base R and ran a huge 12,096-cell factorial (plus a full Woodhen rerun after an 8.9 GB `N > 5,000` kinship OOM and a 1.2M-replicate precision top-up). Gemini kept full backwards compatibility (8,244 LOC), ran slower per core despite C99, and ran ~350,000+ adaptive replicates locally.
-- **Scientific convergence across all three independent studies:**
-  1. Expectation-matching removes most apparent density/ordering "package effect" variance (leaving parametric uncertainty dominant: ~62–95% of variance).
-  2. Structural mechanisms that genuinely survive matching are **inbreeding representation** (omitting inbreeding understates risk dramatically; scalar `proxy_Ne` misstates baseline drift unless generation-time-scaled [Claude] and fails severely under supplementation by missing outbred founder genetic rescue [Gemini]), **carrying-capacity semantics** (hard truncation vs. territorial floaters vs. sub-capacity Beverton–Holt damping), and **process/release timing** near decision margins. Bounded vs. Poisson litters at equal mean had negligible impact.
-  3. **Parsimony check:** Compact age/sex count models preserve ordinal management rankings well (0%–minimal regret) but diverge sharply on absolute risk thresholds and supplementation gains when individual pedigree/genetic rescue or territorial/maternal structure matters.
-- **Adviser judgement under Barry's "1987 Richard Harris" North Star:** **Claude's `OpenPVA 2.0.0` (`f6559e9`)** is the standout package backbone (one clean unified pure-base-R engine, 2,780 LOC, zero external dependencies, idiomatic vectorized R, 15.5 s strict-validated pedigree gate, 1 CRAN NOTE), with three targeted imports/hardening items from peers: Codex's PSOCK `.libPaths()` + `--vanilla` fix and real R 4.1.0 test, an explicit large-$N$ (`N > 2,000`) memory guard or sparse/compressed fallback inspired by Gemini's C99 ancestor-BFS pedigree, and retaining a clean Grizzly mammal example alongside Woodhen.
+### 1. Backbone verdict (unanimous 3-for-3)
+Adopt **`candidate-claude` (`OpenPVA 2.0.0`, `f6559e9`)** as the unified, base-R-only backbone (zero external `Imports`, zero compiled code for now, 2,780 LOC, idiomatic vectorized R processes, strict cohort accounting, 1 CRAN NOTE). Do **not** port Codex's separate `cohort_program()` C++ sidecar or Gemini's dual list/data-frame backwards-compatibility layer or `dplyr`/`tibble`.
 
-## Settled decisions
+### 2. Verified release blockers to fix before landing `OpenPVA 2.0.0` (all reproduced live by adviser)
+1. **Unseeded runs repeat identically** *(Claude catch)*: `run_scenario()` / `run_pva_ensemble()` draw random root seeds inside `.with_rng_restored()`, returning the exact same seed on consecutive unseeded calls (`1781592037` twice). Fix: draw unseeded root seeds *outside* `.with_rng_restored()`.
+2. **Females breed without males by default** *(Claude catch)*: `reproduction_process(require_mate = FALSE)` + `mate_random()` returning `NA` lets 20 females with 0 males produce 35 births; README example leaves males decorative. Fix: default `require_mate = TRUE` whenever `mate` is supplied (and make mating an explicit choice in examples/docs).
+3. **Known full siblings initialise with kinship = 0** *(Codex catch)*: `pva_state(..., pedigree = TRUE)` silently defaults to a diagonal kinship matrix even when `mother_id`/`father_id` are supplied (`kinship[3,4] = 0` instead of `0.25`), and strict validation compares two references to the same mutable kinship environment. Fix: derive initial kinship from supplied parentage (or require an aligned matrix) and guard store integrity across non-creating processes.
+4. **`summarise_trajectory()` crashes on default `scenario_spec()` and disagrees with `summarise_pva()`** *(Gemini catch)*: `include_initial` defaults to `TRUE` in `summarise_trajectory()` (crashing on `initial_census = NULL`) vs `FALSE` in `summarise_pva()` (yielding `p_ever_below = 0` vs `1` on the same run). Fix: align defaults cleanly (`include_initial = has_initial` or consistent explicit default across both functions).
+5. **`staged_survival_process()` miscomputes survival when rates change between stages** *(all three)*: at `post_share = 0` with density-changed rate, residents died (`0/2` alive). Fix: rescale and store `U' = U / s_pre^(1-q)` in an engine-safe slot and test `U' < s_post^q` (bit-identical when rates are constant).
+6. **Pedigree `fast` mode `NA` corruption & dead-sire/unknown-sire handling** *(Claude + Gemini)*: `validation = "fast"` silently writes `NA` into `pedigree_F` and `kinship` when `mate = NULL` (`anyNA = TRUE`), and a sire dying between pairing and birth breaks `pedigree = TRUE` (classic grizzly summer mating → autumn harvest → winter parturition). Fix: validate parentage in both modes and retain dead-sire kinship rows (or compact breeder-ancestry table) across the interval until birth.
+7. **PSOCK / Windows parallelism & broken CI workflows** *(all three)*: propagate `.libPaths()` + `rscript_args = "--vanilla"` and auto-export callback globals via recommended `codetools` (Codex's fix), enable Windows PSOCK test & CI, remove stale `scripts/ci_restore.R` / `scripts/run_lint.R` calls from `.github/workflows/`, and verify on a real R 4.1.0 runtime.
+8. **Ensemble cache key & RNG hygiene** *(all three)*: `run_pva_ensemble()` cache ignores model/summary code, `validation`, and package version; also seed stochastic builders within each member's RNG scope.
 
-- **23 Nov 2026 (B1 setup):** Preserve OpenPVA's GAPPS-style composable ordinary-R process philosophy; curated remote-free single-commit clones.
-- **24 Nov 2026 (Charter & North Star):** North Star is **OpenPVA as the modern GAPPS** (tool conservation biologists and AI agents choose to use), anchored by the *"1987 Richard Harris"* litmus test; case studies serve to develop, stress-test, and illustrate the tool rather than forcing a primary journal paper prematurely.
+### 3. Verified `[IMPORTANT]` polish & targeted harvest (Sprint 2)
+- **Validation & edge-case fixes:** reject negative/non-integer individual event counts before summing (`c(2, -1)` currently passes for 1 death); check census completeness against `scenario$n_runs * scenario$n_steps` and require explicit selection on multiple censuses; check nonexistent mate rows, non-integer litters, and logical `NA` in `removal_process(select = )`; error instead of silent clamping in `litter_binomial()` (`mean > size`), fix `shift_logit(1, -Inf) -> NaN`, fix `summarise_accounting(df)` tautology, validate non-NULL global in `inbreeding_proxy_process()`, and allow `age_sex_rate()` to cover one-sex tables without dummy rows.
+- **Large-$N$ pedigree safety (stay pure R):** drop `"state"` from default `keep` in `run_scenario()` (avoids storing 7.7 GB of dense kinship matrices across 1,000 runs), reduce kinship store growth factor from `2x` to `1.25–1.5x`, add an explicit configurable memory guard (`max_dense_kinship`), and evaluate Gemini's ancestor-compressed pedigree algorithm as a pure-R fallback (only escalating to zero-dependency C99 `.Call()` if a real large-$N$ model proves pure R too slow).
+- **Inbreeding proxy safeguard (reconciled across all 3 studies):** require explicit `generation_time` (no default!) in `inbreeding_proxy_process()`, warn/error if introductions occur with `migration = NULL`, and document clearly that scalar $N_e$ proxies miss F1 heterosis so `pedigree = TRUE` is recommended under supplementation.
+- **1987 Richard Harris examples & ecology:** add a clean standalone `inst/examples/grizzly/` maternal-care / inter-birth-interval example (restoring the core 1987 GAPPS problem without polluting the exported namespace), fix Woodhen's female-only survival lookup when male rates change, preserve origin–destination counts in `dispersal_process()` (from Codex), and add a clean user vignette + agent quickstart.
 
-## Verified on disk (25 Nov 2026)
-
-- Frozen B2 reports, preregistrations, and `HEAD` SHAs archived under gitignored `projects/openpva/work/frozen-B2/{codex,claude,gemini}/`.
-- Independent clean `git archive HEAD` builds, `R CMD check --as-cran --no-manual`, `testthat`, and uniform process-tree RSS benchmarks completed in gitignored `projects/openpva/work/verify/`; all three scientist workspaces remain untouched with clean `git status` and zero remotes.
-- Frozen 3.5 MB B3 review packet (`output/b3-packet/{B3-VERIFIED-METRICS.md,candidate-codex,candidate-claude,candidate-gemini}`) and identical `output/ASSIGNMENT-B3.md` (`d8459079…`) staged across all three workspaces with spotless `git status`.
+### 4. Scientific discrepancies fully reconciled
+- **`proxy_Ne`:** Not biological contradiction—three different equations: Gemini ran `1/(2Ne)` per *year* (no generation-time scaling $T_g$, no immigrant dilution → +42 pp even without releases in `G1`, +63 pp with releases in `W3`); Codex applied $B = 2$ to *every adult every year* (driving both proxy and exact pedigree to ~100%); Claude scaled $N_e$ by $T_g$ and diluted immigrants by $(1-m)^2$.
+- **Release timing ($s = ab$):** Age-2 Woodhen releases ($s_2 = 0.85$) agree within ~1–2 pp across all three (`1.8–2.6 pp` Claude, `~1.8 pp` Codex, `3.1–3.9 pp` Gemini with exact pedigree $B = 3.14$). Claude's `10.8–11.0 pp` came from its second age-0 chick release arm ($s_0 = 0.35$).
 
 ## Next action
 
-Launch Round B3 independently in each scientist's desktop app (fresh session recommended; fast read-only audit, ~10 min, no heavy compute). Once all three `output/B3-critique.md` files exist on disk, synthesize findings with Barry to lock the final hardening/integration checklist for adopting `OpenPVA 2.0.0` (or whichever backbone wins B3 scrutiny) onto `BWBrook/OpenPVA`.
+Await Barry's approval to execute the **OpenPVA 2.0.0 Hardening Sprint** (apply all 8 verified blockers + targeted Sprint 2 polish onto a clean integration branch of Claude's `OpenPVA 2.0.0`, verify with `R CMD check --as-cran` + real R 4.1.0 + Windows/PSOCK + full oracles + scaling gate, then review with Barry before landing onto `BWBrook/OpenPVA` and rolling the banked Workflow B lessons into `BWBrook/research-advisor`).
 
-## Banked harness lessons (deferred until post-B3 update)
+## Banked harness lessons (ready for post-pilot update)
 
-- **Default: not paper-shaped until the human pulls the trigger.** Resist agents' reflex to turn every Workflow B tool/investigation into a journal manuscript prematurely; keep documentation thorough without forcing paper framing until explicitly chosen.
-- **Intermediate-repo curation applies to Workflow B**, not just Workflow A (stripping stale agent roadmaps/handovers/artefacts prevents B1 anchoring).
-- **Plain-English charter gut-check before B2 launch**, plus a quick host-runtime/`renv` pre-flight and placing `CHARTER.md` inside gitignored `output/` to keep `git status` and `R CMD check` clean.
-- **Remote compute & detachable `tmux` routing in B2 prompts:** Never anchor heavy B2 assignments exclusively to the local laptop; explicitly remind scientists in gitignored `ASSIGNMENT-B2.md` to offload long or parallelisable runs to available remote servers / resized cloud VMs / HPC batch queues inside detachable `tmux` sessions—assigning each scientist its own **isolated per-family remote directory** so peer isolation holds off-laptop too (and keeping machine hostnames strictly in gitignored local files / personal machine policy, never in public repo files).
-- **Specify "single unified engine" invariant explicitly when performance gates are set:** Without it, a fast-optimising scientist can satisfy a benchmark gate via a separate fixed-schema compiled sidecar rather than speeding up the general composable engine.
+- **Default: not paper-shaped until the human pulls the trigger.**
+- **Intermediate-repo curation applies to Workflow B** (stripping stale roadmaps/handovers/artefacts prevents B1 anchoring).
+- **Plain-English charter gut-check before B2 launch**, plus host-runtime/`renv` pre-flight and gitignored `output/CHARTER.md`.
+- **Remote compute & detachable `tmux` routing in B2 prompts** with isolated per-family remote directories (hostnames kept in gitignored local files only).
+- **Specify "single unified engine" invariant explicitly** when setting performance gates (prevents sidecar bypasses).
+- **Fresh-session read-only B3 cross-critique is disproportionately high ROI:** 40 minutes of read-only cross-family review uncovered 8 real, live-reproducible blockers in the winning build—with every single model family catching unique blockers the other two missed.

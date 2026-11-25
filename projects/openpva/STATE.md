@@ -1,8 +1,8 @@
-# Current state — OpenPVA (Workflow B)
+# Current state — OpenPVA (Track B pilot)
 
-Updated: 25 November 2026, Australia/Hobart. **Stage B5 final diff audit by Claude (`Fable`) returned `Verdict: GO` with zero blockers. `OpenPVA 2.0.0` (`c4dafb6`, pure base R, 3,126 LOC, `900 PASS` on R 4.6.2 & R 4.1.0, `0 err / 0 warn / 1 NOTE` as-CRAN) is ready for Barry's landing decision on `BWBrook/OpenPVA` and post-pilot `research-advisor` harness update.**
+Updated: 25 November 2026, Australia/Hobart. **Pilot complete and PR live with 4/4 green CI.** History-preserving Pull Request [#1](https://github.com/BWBrook/OpenPVA/pull/1) (`openpva-2.0.0` @ `4806407` → `main` @ `89b34ee`) passed all four GitHub Actions checks (Ubuntu R release, Ubuntu R 4.1.0 including clean-library PSOCK floor check, macOS R release, Windows R release). All pilot lessons and the clean Track B (rebase) / Track C (tabula-rasa) separation have been folded into `BWBrook/research-advisor`.
 
-- **Workflow:** B — Original research / scientific-software completion from a partially developed repository
+- **Track:** B — Project rebase & completion (pilot that separated Track B from Track C)
 - **Adviser:** Gemini 4 Neon (separate from the three independent scientists)
 - **Source repository:** `BWBrook/OpenPVA` (public GitHub, MIT license)
 - **Common source baseline:** commit `89b34eeaae608a39b9c040fe8e9f7af217d9ab47` (`89b34ee`, 19 Nov 2026)
@@ -60,15 +60,25 @@ Adopt **`candidate-claude` (`OpenPVA 2.0.0`, `f6559e9`)** as the unified, base-R
 - **Non-blocking follow-ups recorded for post-2.0.0:** (1) warn/guard against female-only survival tables in `age_sex_rate()` silently returning 0 for males; (2) add a related-founder block crossing 2,000 slots to `scripts/benchmark_large_pedigree.R` and note one-way dense→traced switch; (3) verify live GitHub Actions CI across Ubuntu/macOS/Windows + R 4.1.0 on first push; (4) note in `README.md` that `mate_from_field()` requires refreshing pairing fields each interval.
 - **Pre-landing note:** Replace sprint-scoped `AGENTS.md` in `~/codex/openpva-2.0` with a permanent `OpenPVA 2.0.0` `AGENTS.md` (and note AI-system provenance in `NEWS.md`/commit message) before opening a history-preserving PR onto `BWBrook/OpenPVA`.
 
+## Landing — PR #1 on `BWBrook/OpenPVA` (25 Nov 2026)
+
+- **Pull request:** https://github.com/BWBrook/OpenPVA/pull/1 (`openpva-2.0.0` @ `4806407` off `main` @ `89b34ee`, preserving full 1.x history).
+- **Pre-landing polish (on top of `c4dafb6`):** permanent `OpenPVA 2.0.0` `AGENTS.md`, `README.md` cleanup + B5 notes (`mate_from_field()` interval refresh & one-sex survival table warning for `age_sex_rate()`), explicit AI-system provenance in `NEWS.md`, and `libuv1-dev` on Linux CI (fixing `fs 2.1.0` compilation while keeping single-line `Rscript --vanilla` for Windows `rtools45` bash).
+- **Local verification:** `gitleaks protect --staged` (`0` leaks); `R CMD check --as-cran --no-manual` (`0 err / 0 warn / 1 NOTE` [New submission], `900 PASS / 0 FAIL / 0 WARN / 0 SKIP`, `73.0 s`).
+- **Live GitHub Actions CI ([Run 45547346310](https://github.com/BWBrook/OpenPVA/actions/runs/45547346310)) — 4/4 PASS:**
+  - `ubuntu-24.04 / R release`: PASS (`3m46s`)
+  - `ubuntu-24.04 / R 4.1.0` (including `scripts/check_r_floor.R` clean-library PSOCK worker check): PASS (`4m1s`)
+  - `macos-latest / R release`: PASS (`2m52s`)
+  - `windows-latest / R release`: PASS (`1m48s`)
+
 ## Next action
 
-Await Barry's approval to: (1) land `OpenPVA 2.0.0` onto `BWBrook/OpenPVA` (recommended: history-preserving `openpva-2.0.0` branch + PR so live GitHub Actions CI verifies Ubuntu/macOS/Windows/R-4.1.0 before merging to `main`), and (2) roll the 6 banked Workflow B lessons + pilot retrospective into `BWBrook/research-advisor`.
+- **Barry:** Review and merge [BWBrook/OpenPVA#1](https://github.com/BWBrook/OpenPVA/pull/1) when ready (and optionally cut a `v2.0.0` release tag / Zenodo DOI later).
+- **Cleanup (once merged):** Prune temporary pilot clones (`~/codex/openpva`, `~/claude/openpva`, `~/gemini/openpva`, `~/codex/openpva-2.0`, `~/claude/openpva-audit`) when Barry confirms.
 
-## Banked harness lessons (ready for post-pilot update)
+## Post-pilot retrospective (25 Nov 2026)
 
-- **Default: not paper-shaped until the human pulls the trigger.**
-- **Intermediate-repo curation applies to Workflow B** (stripping stale roadmaps/handovers/artefacts prevents B1 anchoring).
-- **Plain-English charter gut-check before B2 launch**, plus host-runtime/`renv` pre-flight and gitignored `output/CHARTER.md`.
-- **Remote compute & detachable `tmux` routing in B2 prompts** with isolated per-family remote directories (hostnames kept in gitignored local files only).
-- **Specify "single unified engine" invariant explicitly** when setting performance gates (prevents sidecar bypasses).
-- **Fresh-session read-only B3 cross-critique is disproportionately high ROI:** 40 minutes of read-only cross-family review uncovered 8 real, live-reproducible blockers in the winning build—with every single model family catching unique blockers the other two missed.
+- **Independence & fresh-session cross-critique ROI:** B2 produced three genuinely distinct engineering philosophies from one charter (Codex: C++ fixed-schema sidecar; Gemini: backwards-compatible dual paths + C99; Claude: pure-base-R unified columnar redesign). Fresh-session read-only B3 (~40 min) was the highest-leverage step of the pilot: every model family caught unique, live-reproducible release blockers in the winning build that the other two missed (8 blockers total), and live PR CI then caught the Ubuntu `libuv1-dev` packaging gap before touching `main`.
+- **Human attention (design vs. supervision):** High-value human judgement went to reframing the North Star early—stopping the premature paper reflex and anchoring on a clear tool-first test ("modern GAPPS") via a plain-English charter gut-check. Routine supervision friction came from WSL local compute (15–18 h overnight runs instead of offloaded remote `tmux`), host `renv`/R mismatch, and B2 prompt ambiguity on unified vs. sidecar engines.
+- **Proportionate convergence:** Picking one coherent backbone (`candidate-claude` 2.0.0) and harvesting targeted peer fixes/algorithms (Codex's `codetools`/PSOCK fix and dispersal counts; Gemini's ancestor-compressed pedigree algorithm rewritten in 129 lines of pure R) via a single Codex hardening sprint (B4) + Claude diff audit (B5) beat merging three architectures.
+- **Harness updates landed:** All six pilot lessons are folded into `BWBrook/research-advisor`, and the pilot directly clarified why **Track B (Project rebase & completion)** and **Track C (Tabula-rasa research)** belong as separate tracks (`workflows/B-project-rebase.md`, `workflows/C-tabula-rasa.md`, `prompts/B1-project-rebase.md`, `prompts/C1-tabula-rasa-conception.md`, `prompts/BC2-execution.md`, `prompts/BC3-cross-critique.md`, `scripts/build-isolated-clones.sh --workflow C`).

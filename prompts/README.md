@@ -5,10 +5,13 @@ Only the opening assignments are kept as templates. The workflow is adaptive: re
 | Prompt | Recipient | When to use |
 |---|---|---|
 | [adviser-start.md](adviser-start.md) | Continuing local adviser | First launch or a fresh adviser session for `projects/<slug>/`. |
-| [A1-editorial-reconnaissance.md](A1-editorial-reconnaissance.md) | Each of the three independent scientists | Workflow A Stage 1, after building the curated baseline and `INPUT.md`. |
-| [A2-fresh-draft.md](A2-fresh-draft.md) | Each of the three independent scientists | Workflow A Stage 2, after comparing A1 conceptions and settling shared bounds/clarifications. |
-| [A3-primary-writer.md](A3-primary-writer.md) | Fresh primary writer (`~/writer/<slug>`) | Workflow A Stage 3 (or Workflow B final communication), after auditing scientist drafts into read-only `grist/`. |
-| [B1-project-conception.md](B1-project-conception.md) | Each of the three independent scientists | Workflow B Stage 1, after the lead scientist supplies an idea and constraints. |
+| [A1-editorial-reconnaissance.md](A1-editorial-reconnaissance.md) | Each of the three independent scientists | Track A Stage 1, after building the curated baseline and `INPUT.md`. |
+| [A2-fresh-draft.md](A2-fresh-draft.md) | Each of the three independent scientists | Track A Stage 2, after comparing A1 conceptions and settling shared bounds/clarifications. |
+| [A3-primary-writer.md](A3-primary-writer.md) | Fresh primary writer (`~/writer/<slug>`) | Track A Stage 3 (or Track B/C final communication, only if triggered), after auditing scientist drafts into read-only `grist/`. |
+| [B1-project-rebase.md](B1-project-rebase.md) | Each of the three independent scientists | Track B Stage 1, after curating a partially built repository into remote-free single-commit clones. |
+| [C1-tabula-rasa-conception.md](C1-tabula-rasa-conception.md) | Each of the three independent scientists | Track C Stage 1, from bare (or nearly bare) tabula-rasa workspaces with `INPUT.md` and optional `resources/`. |
+| [BC2-execution.md](BC2-execution.md) | Each of the three independent scientists | Track B or C Stage 2, after agreeing the compact charter (`output/CHARTER.md`) and plain-English gut-check. |
+| [BC3-cross-critique.md](BC3-cross-critique.md) | Three **fresh** scientist sessions | Track B or C Stage 3, read-only adversarial audit over frozen `output/[b3|c3]-packet/` and adviser-verified metrics. |
 
 Render one launch copy per scientist under gitignored `projects/<slug>/work/` and copy each scientist's own prompt into its isolated workspace at `output/ASSIGNMENT-<round>.md` for clean desktop-app or CLI launch. Keep substantive wording and inputs identical across all three; only workspace and output paths differ.
 

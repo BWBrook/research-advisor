@@ -12,7 +12,7 @@ This harness applies Rich Sutton's *Bitter Lesson* to scientific delegation—av
 - Audience, venue and delivery constraints (for communication rounds), plus strict context isolation from stale history and peer work.
 
 **Leave unconstrained (how each scientist gets there):**
-- Internal workflow, subagent decomposition, code architecture and abstractions (Workflow B), and narrative skeleton or phrasing templates (Workflow A).
+- Internal workflow, subagent decomposition, code architecture and abstractions (Tracks B & C), and narrative skeleton or phrasing templates (Track A).
 - Intermediate micro-milestones. Judge finished, self-contained artifacts side by side rather than steering every step.
 - Distinguish **scientific invariants** (keep rigid) from **codified taste or style policing** (lift when it degrades clarity or forces defensive prose—as observed with verbatim-phrase rules in the `rc-dates` pilot).
 
@@ -40,22 +40,24 @@ git -C "$research_repo" worktree list
 
 Record any relevant uncommitted or untracked files; never stash, reset, clean or commit unrelated work just to obtain a tidy baseline. The essential requirement is identical inputs for all three scientists.
 
-For Workflow A, write a neutral `INPUT.md` listing allowed files, the baseline commit, audience/venue/length constraints, the recommended evidence-first reading order, a short inventory of what any excluded Supplement already covers, and explicit exclusions. Never preload one scientist's preferred narrative.
+For **Track A** (manuscript rescue), write a neutral `INPUT.md` listing allowed files, the baseline commit, audience/venue/length constraints, the recommended evidence-first reading order, a short inventory of what any excluded Supplement already covers, and explicit exclusions. Never preload one scientist's preferred narrative.
 
-For Workflow B, the opening packet can be simply the lead scientist's idea, known data sources and constraints.
+For **Track B** (project rebase & completion), build a curated single-commit snapshot of the partially developed repository preserving active code, tests, examples and design contracts while stripping `git log`, `origin`, stale build dumps and prior agent roadmaps/handovers so scientists are not anchored to earlier tactical plans.
 
-## 3. Separate adviser and scientist contexts (curated isolation)
+For **Track C** (tabula-rasa research), start from a bare (or nearly bare) single-commit workspace containing only `INPUT.md` (the lead scientist's idea, North Star, motivation and constraints), minimal Track C isolation instructions, and optional hardlinked read-only primary data or reference PDFs under `resources/`—with zero prior code or AI ideation.
+
+## 3. Separate adviser and scientist contexts (curated & tabula-rasa isolation)
 
 The adviser runs from this repository. The three independent scientists (Codex, Claude, Gemini) run in their own isolated workspaces and receive only their assignment, common inputs and their own output destination. Never feed this adviser repository, its discussion archive, or another scientist's report into an independent round.
 
-**Prefer curated, single-commit, remote-free clones over raw worktrees for Workflow A:**
+**Prefer single-commit, remote-free clones over raw worktrees across all three tracks:**
 
-- A raw `git worktree` of a heavily revised project exposes full `git log` history, prior AI review/rework memos (e.g. `manuscript/reviews/`), stale checklists, out-of-scope renderings, and the GitHub `origin` remote.
-- Instead, build a stripped single-commit baseline containing **only** the allow-listed files needed for the assignment (figures + PNG previews for PDFs so all three model families have equal visual access, claims ledger, interpretation contract, compact primary summary CSVs, target manuscript + captions, bibliography), plus a minimal experiment-scoped `AGENTS.md`/`CLAUDE.md`/`GEMINI.md`.
+- A raw `git worktree` of an existing project exposes full `git log` history, prior AI review/rework memos (e.g. `manuscript/reviews/`, `HANDOVER.md`, stale roadmaps/check dumps), stale checklists, out-of-scope renderings, and the GitHub `origin` remote.
+- Instead, build a clean single-commit baseline tailored to the track—allow-listed evidence + manuscript for Track A; allow-listed active source, tests, examples and contracts for Track B; bare `INPUT.md` (plus optional small starter files) for Track C—together with minimal track-scoped `AGENTS.md`/`CLAUDE.md`/`GEMINI.md`.
 - Clone that baseline into separate per-family paths (`~/codex/<slug>`, `~/claude/<slug>`, `~/gemini/<slug>`) and **remove `origin`** during independent rounds (`git remote remove origin`).
   - Removing `origin` eliminates accidental pushes to GitHub, prevents any scientist from fetching or listing peer branches on a shared remote, and avoids SSH/sandbox friction.
   - If off-laptop backup or multi-machine sync is wanted, the **adviser** (or user) can mirror frozen round snapshots to an optional private bare remote *after* each round closes—never shared live among scientists during independent work.
-- `scripts/build-isolated-clones.sh` implements this curated snapshot-and-clone step from a plain manifest file.
+- `scripts/build-isolated-clones.sh` (`--workflow A|B|C`) implements this baseline-and-clone step (manifest-driven for Tracks A & B; bare-workspace capable with optional `--resources-dir` for Track C).
 
 **Shared read-only resources (reference PDFs, bulky frozen datasets or model outputs):**
 
@@ -67,7 +69,7 @@ The adviser runs from this repository. The three independent scientists (Codex, 
 
 **Dedicated primary-writer workspace (`~/writer/<slug>`):**
 
-- When using a **fresh primary writer** to compose the final manuscript (in Workflow A after scientist drafts, or at the end of Workflow B once the science settles), stage a dedicated, remote-free clone at `~/writer/<slug>` using `scripts/stage-writer-workspace.sh`.
+- When using a **fresh primary writer** to compose the final manuscript (in Track A after scientist drafts, or at the end of Track B or C only once the lead scientist explicitly triggers a manuscript), stage a dedicated, remote-free clone at `~/writer/<slug>` using `scripts/stage-writer-workspace.sh`.
 - Keeping the writer separate from `~/{codex,claude,gemini}/<slug>` leaves all three scientist clones clean and intact for the **final scientific-fidelity audit** on the finished manuscript.
 - Place frozen scientist drafts and the adviser's verified audit synthesis inside a gitignored, read-only (`chmod a-w`) `grist/` directory inside `~/writer/<slug>`, alongside the curated primary evidence and `output/ASSIGNMENT-WRITE.md`. This gives the fresh writer full visual and textual context in one desktop window with zero cross-workspace friction.
 
@@ -80,6 +82,12 @@ The adviser runs from this repository. The three independent scientists (Codex, 
 ## 4. Prepare and launch a substantial assignment
 
 Render one local launch copy per scientist under gitignored `projects/<slug>/work/`, filling exact paths and scientist identity, **and copy each scientist's own prompt into its workspace at `output/ASSIGNMENT-<round>.md`** (which is gitignored inside the clone). Keep substantive wording and inputs identical across all three.
+
+**Track B & C pre-flight and compute-routing hygiene:**
+
+- **Host-runtime pre-flight:** Before staging Stage 2 execution (`B2`/`C2`), spend 5 seconds checking the host toolchain (R/Python version, installed vs. absent packages, and any `.Rprofile`/`renv` or `.venv` autoloaders that would stall fresh clones) and record the verified facts in `output/ASSIGNMENT-[B2|C2].md`.
+- **Keep `CHARTER.md` inside gitignored `output/`:** Placing `output/CHARTER.md` beside `output/ASSIGNMENT-[B2|C2].md` keeps `git status` empty and prevents top-level non-standard-file NOTEs during package builds (`R CMD check`).
+- **Remote compute & detachable `tmux` routing:** Never anchor multi-hour Stage 2 simulations exclusively to a local laptop when remote servers, resizable cloud VMs or HPC queues are available. In gitignored `output/ASSIGNMENT-[B2|C2].md` (never in tracked public repo files), remind scientists to offload heavy parallel runs inside detachable `tmux` sessions under **isolated per-family remote directories and session names** (e.g., `<remote-scratch>/<slug>/{codex,claude,gemini}`) so peer isolation holds off-laptop too.
 
 **Primary launch surface — Desktop apps (recommended for interactive monitoring):**
 
@@ -121,7 +129,7 @@ Keep submissions frozen before comparison or review. Never rely on a scientist's
 - **Freshness check** (e.g. 8-word n-gram overlap against baseline body text) to confirm genuine fresh composition rather than light patching, plus a sweep for stray build markup or anonymity leaks.
 - **Primary-evidence spot-checks** against source CSVs/tables whenever two drafts disagree on a number, qualifier, or denominator (in the `rc-dates` pilot, this caught a double-counted simulation row total and verified a missing all-date comparator directly from CSV).
 
-**Skip redundant intermediate cross-critique when a direct adviser audit suffices.** If the drafts are heading into a fresh primary writer session (`~/writer/<slug>`), asking the three scientists to cross-critique each other's intermediate drafts burns attention on prose you are about to replace. Reserve the three scientists' critical pass for a **final scientific-fidelity audit** of the primary writer's unified manuscript. (In Workflow B original research, independent scientist cross-critique of completed investigations remains valuable because code and inference discrepancies must be adjudicated before writing.)
+**Skip redundant intermediate cross-critique when a direct adviser audit suffices.** If the drafts are heading into a fresh primary writer session (`~/writer/<slug>`), asking the three scientists to cross-critique each other's intermediate drafts burns attention on prose you are about to replace. Reserve the three scientists' critical pass for a **final scientific-fidelity audit** of the primary writer's unified manuscript. In Tracks B and C (project rebase or tabula-rasa research), by contrast, **fresh-session, read-only Stage 3 cross-critique** over a self-contained frozen `output/[b3|c3]-packet/` (with adviser-verified build, test/oracle, and uniform parent+worker process-tree RSS benchmarks) has exceptionally high ROI: starting brand-new chat threads eliminates compacted Stage 2 logs and defensive attachment, and independent model families routinely catch unique release-blocking bugs or methodological flaws the others miss.
 
 **Default finishing toolchain for Workflow A manuscripts:**
 - **De-AI prose check (`audit-ai-writing`):** Run the bundled `--genre scientific` scanner plus a manual cluster check on the primary writer's draft before the lead scientist reads—distinguishing genuine tells (em-dash clusters, repeated `X, not Y` / `rather than` antitheses, repeated `First/Second/Third` scaffolding, copulative avoidance) from domain terms of art.

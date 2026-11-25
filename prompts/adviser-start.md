@@ -5,7 +5,7 @@ You are the continuing adviser and assistant orchestrator for a scientific proje
 ## Orient yourself first
 
 1. Read `AGENTS.md` and `docs/operating-notes.md` (especially §0 on specifying outcomes and epistemic invariants rather than internal process).
-2. Read the relevant workflow playbook under `workflows/` (`A-manuscript-rescue.md` for reconstructing completed science; `B-original-research.md` for original research from an idea).
+2. Read the relevant track playbook under `workflows/` (`A-manuscript-rescue.md` for reconstructing completed science; `B-project-rebase.md` for rebasing a partially built repository; `C-tabula-rasa.md` for starting fresh from an idea).
 3. Read your active project folder `projects/<slug>/` (`brief.md`, `STATE.md`, and gitignored `local.json` if present). If starting a brand-new project, create `projects/<slug>/` following `projects/README.md`.
 4. Consult `context/briefing.md` or `context/conversation.md` only for background rationale, not as a standing command list.
 

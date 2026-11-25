@@ -12,10 +12,10 @@ projects/<slug>/
 
 ## Two ways to run a new project
 
-1. **Inside this hub (best while the harness is actively evolving):** Create `projects/<slug>/` with `STATE.md`, `brief.md`, and an ignored `local.json` copied from [local.example.json](../local.example.json). Multiple advisers (e.g. one for an Experiment A manuscript rescue and a parallel adviser for an Experiment B original investigation) can work concurrently in separate `projects/<slug>/` folders without merge conflicts.
+1. **Inside this hub (best while the harness is actively evolving):** Create `projects/<slug>/` with `STATE.md`, `brief.md`, and an ignored `local.json` copied from [local.example.json](../local.example.json). Multiple advisers (e.g. Track A manuscript rescue, Track B project rebase, and Track C tabula-rasa research) can work concurrently in separate `projects/<slug>/` folders without merge conflicts.
 2. **As a standalone repository (best for collaborator-specific or self-contained projects):** Click **Use this template** on GitHub (`BWBrook/research-advisor`) or clone this repo for a single project, then work in `projects/<slug>/`.
 
 ## Public vs. local files
 
 - `projects/*/local.json` and `projects/*/work/` are gitignored so absolute local paths, staging baselines and temporary prompts stay off GitHub.
-- Track `STATE.md` and `brief.md` when working in the open (as in our worked proof-of-concept [`rc-dates`](rc-dates/)). If a future project is embargoed or private, add `projects/<slug>/` to `.git/info/exclude` locally or run it in a private clone.
+- Track `STATE.md` and `brief.md` when working in the open (as in our worked pilots [`rc-dates`](rc-dates/) [Track A] and [`openpva`](openpva/) [Track B]). If a future project is embargoed or private, add `projects/<slug>/` to `.git/info/exclude` locally or run it in a private clone.

@@ -138,6 +138,8 @@ Keep submissions frozen before comparison or review. Never rely on a scientist's
 
 Do not average incompatible scientific claims or patchwork-stitch favourite paragraphs across drafts (which recreates accretive prose). Pick one coherent structural spine, compose fresh in one voice, apply evidence-backed fidelity fixes, and move to collaborator review or release.
 
-## 7. Keep the process light
+## 7. Keep the process light (and archive-clean when done)
 
 Update `projects/<slug>/STATE.md` at meaningful transitions only. Keep completed manuscripts and heavy research artifacts in their project workspaces, never in this adviser repository. After finishing a pilot, add a short retrospective noting what improved the science or prose, what consumed attention, and what should change in the reusable playbooks or prompts.
+
+**Post-pilot workspace archive & cleanup:** Running three isolated clones (plus optional integration, audit or writer workspaces) is inherently messy—in a good way while the work is active, and pure clutter once the result lands on its upstream repository. Once the final deliverable is merged, tagged or archived upstream, pack the temporary workspaces into **one compact `.zip` archive** using `scripts/archive-pilot-clones.sh` (keeping `.git` history, tracked HEAD code/docs, scientist `output/*.md` reports/assignments and adviser Markdown records, while stripping *all* generated build, cache, check and simulation artifacts—typically compressing hundreds of MB down to a few MB as a self-contained *"what was done"* provenance record). Verify the archive (`unzip -t`), then pass `--delete-sources` (or remove the temporary directories under `~/{codex,claude,gemini,writer}/<slug>` and temporary staging folders in `projects/<slug>/work/`) so only the clean upstream repo and the single compact archive zip remain.

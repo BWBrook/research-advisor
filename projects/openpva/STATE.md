@@ -1,6 +1,6 @@
 # Current state — OpenPVA (Track B pilot)
 
-Updated: 25 November 2026, Australia/Hobart. **Pilot complete and PR live with 4/4 green CI.** History-preserving Pull Request [#1](https://github.com/BWBrook/OpenPVA/pull/1) (`openpva-2.0.0` @ `4806407` → `main` @ `89b34ee`) passed all four GitHub Actions checks (Ubuntu R release, Ubuntu R 4.1.0 including clean-library PSOCK floor check, macOS R release, Windows R release). All pilot lessons and the clean Track B (rebase) / Track C (tabula-rasa) separation have been folded into `BWBrook/research-advisor`.
+Updated: 25 November 2026, Australia/Hobart. **Pilot closed, `OpenPVA 2.0.0` released with Zenodo DOI, and all temporary workspaces archived & cleaned.** Pull Request [#1](https://github.com/BWBrook/OpenPVA/pull/1) merged onto `BWBrook/OpenPVA` `main`, tagged [`v2.0.0`](https://github.com/BWBrook/OpenPVA/releases/tag/v2.0.0) (`8552e7d`), and published to Zenodo (**DOI: https://doi.org/10.5281/zenodo.24521839**; Concept DOI: https://doi.org/10.5281/zenodo.24521838). All five temporary pilot clones plus adviser records were packaged (minus generated artifacts) into a single `3.7 MB` archive zip and cleaned off disk.
 
 - **Track:** B — Project rebase & completion (pilot that separated Track B from Track C)
 - **Adviser:** Gemini 4 Neon (separate from the three independent scientists)
@@ -60,21 +60,16 @@ Adopt **`candidate-claude` (`OpenPVA 2.0.0`, `f6559e9`)** as the unified, base-R
 - **Non-blocking follow-ups recorded for post-2.0.0:** (1) warn/guard against female-only survival tables in `age_sex_rate()` silently returning 0 for males; (2) add a related-founder block crossing 2,000 slots to `scripts/benchmark_large_pedigree.R` and note one-way dense→traced switch; (3) verify live GitHub Actions CI across Ubuntu/macOS/Windows + R 4.1.0 on first push; (4) note in `README.md` that `mate_from_field()` requires refreshing pairing fields each interval.
 - **Pre-landing note:** Replace sprint-scoped `AGENTS.md` in `~/codex/openpva-2.0` with a permanent `OpenPVA 2.0.0` `AGENTS.md` (and note AI-system provenance in `NEWS.md`/commit message) before opening a history-preserving PR onto `BWBrook/OpenPVA`.
 
-## Landing — PR #1 on `BWBrook/OpenPVA` (25 Nov 2026)
+## Release & Archive — `OpenPVA 2.0.0` (25 Nov 2026)
 
-- **Pull request:** https://github.com/BWBrook/OpenPVA/pull/1 (`openpva-2.0.0` @ `4806407` off `main` @ `89b34ee`, preserving full 1.x history).
-- **Pre-landing polish (on top of `c4dafb6`):** permanent `OpenPVA 2.0.0` `AGENTS.md`, `README.md` cleanup + B5 notes (`mate_from_field()` interval refresh & one-sex survival table warning for `age_sex_rate()`), explicit AI-system provenance in `NEWS.md`, and `libuv1-dev` on Linux CI (fixing `fs 2.1.0` compilation while keeping single-line `Rscript --vanilla` for Windows `rtools45` bash).
-- **Local verification:** `gitleaks protect --staged` (`0` leaks); `R CMD check --as-cran --no-manual` (`0 err / 0 warn / 1 NOTE` [New submission], `900 PASS / 0 FAIL / 0 WARN / 0 SKIP`, `73.0 s`).
-- **Live GitHub Actions CI ([Run 45547346310](https://github.com/BWBrook/OpenPVA/actions/runs/45547346310)) — 4/4 PASS:**
-  - `ubuntu-24.04 / R release`: PASS (`3m46s`)
-  - `ubuntu-24.04 / R 4.1.0` (including `scripts/check_r_floor.R` clean-library PSOCK worker check): PASS (`4m1s`)
-  - `macos-latest / R release`: PASS (`2m52s`)
-  - `windows-latest / R release`: PASS (`1m48s`)
+- **Merged PR & release:** [BWBrook/OpenPVA#1](https://github.com/BWBrook/OpenPVA/pull/1) merged onto `main` (`0bfda19`, preserving 1.x history), followed by `CITATION.cff` (`8552e7d`) and annotated tag + GitHub Release [`v2.0.0`](https://github.com/BWBrook/OpenPVA/releases/tag/v2.0.0) (with `OpenPVA_2.0.0.tar.gz` attached).
+- **Zenodo DOI:** Version 2.0.0 published at https://doi.org/10.5281/zenodo.24521839 (Record: https://zenodo.org/record/24521839; Concept DOI: https://doi.org/10.5281/zenodo.24521838), archiving both `OpenPVA-v2.0.0.zip` (`141 KB`) and `OpenPVA_2.0.0.tar.gz` (`71 KB`).
+- **Pre-release verification:** Local `R CMD check --as-cran --no-manual` (`0 err / 0 warn / 1 NOTE` [New submission], `900 PASS / 0 FAIL / 0 WARN / 0 SKIP`); `gitleaks protect --staged` (`0` leaks); live GitHub Actions CI ([Run 45547346310](https://github.com/BWBrook/OpenPVA/actions/runs/45547346310)) **4/4 PASS** (`ubuntu-24.04 / R release` `3m46s`, `ubuntu-24.04 / R 4.1.0` + `scripts/check_r_floor.R` `4m1s`, `macos-latest / R release` `2m52s`, `windows-latest / R release` `1m48s`).
+- **Pilot archive & cleanup:** All five temporary clones (`codex-B1-B3`, `claude-B1-B3`, `gemini-B1-B3`, `codex-B4-hardening`, `claude-B5-audit`) plus adviser Markdown records packed via `scripts/archive-pilot-clones.sh --delete-sources` into gitignored `projects/openpva/work/openpva-pilot-archive-2026-11-25.zip` (`3.7 MB`, verified with `unzip -tq`), reducing ~480 MB of temporary workspaces and caches to one compact record and leaving `~/{codex,claude,gemini}/` free of OpenPVA clones.
 
 ## Next action
 
-- **Barry:** Review and merge [BWBrook/OpenPVA#1](https://github.com/BWBrook/OpenPVA/pull/1) when ready (and optionally cut a `v2.0.0` release tag / Zenodo DOI later).
-- **Cleanup (once merged):** Prune temporary pilot clones (`~/codex/openpva`, `~/claude/openpva`, `~/gemini/openpva`, `~/codex/openpva-2.0`, `~/claude/openpva-audit`) when Barry confirms.
+Pilot closed cleanly. Move directly back to `BWBrook/OpenPVA` for **v2.x ideation** (non-blocking B5 fixes + next-horizon scientific/tool scope).
 
 ## Post-pilot retrospective (25 Nov 2026)
 

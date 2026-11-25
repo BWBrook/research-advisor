@@ -44,6 +44,8 @@ Compare the three independent rebase conceptions before shared deliberation, the
 - **Single-builder hardening + short diff audit (B4–B5):** Export the winning backbone to a fresh remote-free integration clone, commission one builder (e.g., the larger-allocation family) to execute the verified blocker/harvest checklist with full tests, then run a short read-only `GO / FIX-FIRST` diff audit by the winning-design family before landing onto the upstream repository via a history-preserving PR (letting live CI verify all target platforms).
 - **Optional final communication:** Only if and when the lead scientist explicitly triggers a manuscript, stage a dedicated fresh-writer workspace (`~/writer/<slug>` via `scripts/stage-writer-workspace.sh`) and compose afresh from adjudicated evidence (see [Track A](A-manuscript-rescue.md) Stage 3–4).
 
-## Post-pilot reflection
+## Post-pilot reflection & workspace cleanup
 
 After completion, record briefly in `projects/<slug>/STATE.md`: whether independent rebasing and fresh-session cross-critique exposed real weaknesses or better architectures, how much attention went to science/design vs. supervision, whether convergence stayed proportionate, and whether the contribution reached its audience.
+
+Once the rebased deliverable lands upstream (PR merged / release tagged), package all temporary pilot clones (`.git`, tracked code/docs and Markdown briefs/reports, stripping all generated build/check/simulation artifacts) into a single compact `.zip` archive using `scripts/archive-pilot-clones.sh --delete-sources` and prune temporary staging folders in `projects/<slug>/work/` (`docs/operating-notes.md` §7).

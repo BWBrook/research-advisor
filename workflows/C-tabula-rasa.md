@@ -44,6 +44,8 @@ Compare the three independent conceptions before shared deliberation. Look speci
   - *Empirical / simulation / theoretical investigation:* freeze the adjudicated primary codebase and evidence ledger (verifying any cross-family robustness checks that materially inform the conclusion) without merging redundant pipelines.
 - **Optional final communication:** Only when the lead scientist explicitly decides the adjudicated evidence warrants a paper, stage a dedicated fresh-writer workspace (`~/writer/<slug>` via `scripts/stage-writer-workspace.sh`) and compose afresh (see [Track A](A-manuscript-rescue.md) Stage 3–4).
 
-## Post-pilot reflection
+## Post-pilot reflection & workspace cleanup
 
 After completion, record briefly in `projects/<slug>/STATE.md`: whether independent tabula-rasa framing and execution produced genuinely distinct scientific angles, what fresh-session cross-critique caught, how much human attention went to scientific judgement vs. supervision, and whether the work earned its next audience step.
+
+Once the adjudicated deliverable lands upstream (or the project closes on a documented null/stop decision), package all temporary pilot clones (`.git`, tracked code/docs and Markdown briefs/reports, stripping all generated data/build/simulation artifacts) into one compact `.zip` archive using `scripts/archive-pilot-clones.sh --delete-sources` and prune temporary staging folders (`docs/operating-notes.md` §7).

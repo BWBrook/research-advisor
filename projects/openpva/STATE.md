@@ -1,6 +1,6 @@
 # Current state — OpenPVA (Workflow B)
 
-Updated: 25 November 2026, Australia/Hobart. **Round B3 cross-critique complete, frozen, and independently verified on disk. Unanimous 3-for-3 backbone consensus on `candidate-claude` (`OpenPVA 2.0.0`, pure base R) subject to a crisp, verified hardening checklist before landing onto `BWBrook/OpenPVA`.**
+Updated: 25 November 2026, Australia/Hobart. **Round B3 adjudicated; clean `OpenPVA 2.0.0` Hardening Sprint (Stage B4) staged at `~/codex/openpva-2.0` for fresh Codex (`gpt-6.2-astra`) execution, to be followed by brief Claude (`Fable`) diff audit before landing on `BWBrook/OpenPVA`.**
 
 - **Workflow:** B — Original research / scientific-software completion from a partially developed repository
 - **Adviser:** Gemini 4 Neon (separate from the three independent scientists)
@@ -42,9 +42,16 @@ Adopt **`candidate-claude` (`OpenPVA 2.0.0`, `f6559e9`)** as the unified, base-R
 - **`proxy_Ne`:** Not biological contradiction—three different equations: Gemini ran `1/(2Ne)` per *year* (no generation-time scaling $T_g$, no immigrant dilution → +42 pp even without releases in `G1`, +63 pp with releases in `W3`); Codex applied $B = 2$ to *every adult every year* (driving both proxy and exact pedigree to ~100%); Claude scaled $N_e$ by $T_g$ and diluted immigrants by $(1-m)^2$.
 - **Release timing ($s = ab$):** Age-2 Woodhen releases ($s_2 = 0.85$) agree within ~1–2 pp across all three (`1.8–2.6 pp` Claude, `~1.8 pp` Codex, `3.1–3.9 pp` Gemini with exact pedigree $B = 3.14$). Claude's `10.8–11.0 pp` came from its second age-0 chick release arm ($s_0 = 0.35$).
 
+## Stage B4 — OpenPVA 2.0.0 Hardening Sprint (staged 25 Nov 2026)
+
+- **Integration workspace:** `~/codex/openpva-2.0` (clean, remote-free single-commit export `785f37e` from Claude `f6559e9`, 74 tracked files, `study/` excluded while preserving `scripts/benchmark_gate.{sh,R}`). Frozen B2/B3 workspaces (`~/{codex,claude,gemini}/openpva`) remain untouched.
+- **Builder:** Fresh Codex (`gpt-6.2-astra`) session (preserves Anthropic tokens; executes verified checklist + real R 4.1.0, PSOCK, scaling gate, and `R CMD check --as-cran`).
+- **Staged inputs:** `output/ASSIGNMENT-B4-HARDENING.md` and 14 read-only files in `output/harvest-refs/` (all three B3 critiques, Codex PSOCK/R-4.1/dispersal/Woodhen-history helpers, original Grizzly maternal-care design/code, Gemini ancestor-BFS & bounded-litter references).
+- **Expected handoff:** Clean local `main` commits + `output/B4-hardening-report.md` + verification logs (`testthat.log`, `00check.log`, `r41-check.log`, `r41-tests.log`, `scaling_gate.csv`, `large_n_pedigree.log`).
+
 ## Next action
 
-Await Barry's approval to execute the **OpenPVA 2.0.0 Hardening Sprint** (apply all 8 verified blockers + targeted Sprint 2 polish onto a clean integration branch of Claude's `OpenPVA 2.0.0`, verify with `R CMD check --as-cran` + real R 4.1.0 + Windows/PSOCK + full oracles + scaling gate, then review with Barry before landing onto `BWBrook/OpenPVA` and rolling the banked Workflow B lessons into `BWBrook/research-advisor`).
+Launch the Stage B4 hardening sprint in a fresh Codex Desktop session (`~/codex/openpva-2.0`, `gpt-6.2-astra`). Once Codex commits and saves `output/B4-hardening-report.md`, adviser independently verifies `R CMD check --as-cran` and the scaling gate, runs a brief final diff audit with Claude (`Fable`), presents the release candidate for Barry's approval to push to `BWBrook/OpenPVA`, and rolls the 6 banked Workflow B lessons into `BWBrook/research-advisor`.
 
 ## Banked harness lessons (ready for post-pilot update)
 

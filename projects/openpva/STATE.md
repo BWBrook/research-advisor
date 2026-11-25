@@ -1,6 +1,6 @@
 # Current state — OpenPVA (Workflow B)
 
-Updated: 25 November 2026, Australia/Hobart. **Stage B4 (`OpenPVA 2.0.0` Hardening Sprint by Codex `c4dafb6`) complete and independently verified (`R CMD check --as-cran`: 0 err / 0 warn / 1 NOTE, `900 PASS`, all 8 blockers verified fixed, real R 4.1.0 checked, pure-R 5,000-animal pedigree in `9.7 s / 1.701 MiB / 0` oracle error); brief final diff audit (Stage B5) staged at `~/claude/openpva-audit` for Claude (`Fable`).**
+Updated: 25 November 2026, Australia/Hobart. **Stage B5 final diff audit by Claude (`Fable`) returned `Verdict: GO` with zero blockers. `OpenPVA 2.0.0` (`c4dafb6`, pure base R, 3,126 LOC, `900 PASS` on R 4.6.2 & R 4.1.0, `0 err / 0 warn / 1 NOTE` as-CRAN) is ready for Barry's landing decision on `BWBrook/OpenPVA` and post-pilot `research-advisor` harness update.**
 
 - **Workflow:** B — Original research / scientific-software completion from a partially developed repository
 - **Adviser:** Gemini 4 Neon (separate from the three independent scientists)
@@ -52,14 +52,17 @@ Adopt **`candidate-claude` (`OpenPVA 2.0.0`, `f6559e9`)** as the unified, base-R
   - **5,000-animal pure-R pedigree (`R/ancestry.R`, 129 LOC):** independently verified `9.71 s` (peak `10,000` living, `55,000` ancestry records), `1.701 MiB` state, **`0` max oracle error**.
   - **Woodhen scaling gate (`K = 30`, 1,000 × 40-yr, `strict`, 8 fork):** passes under `< 60 s / < 2 GB`, though slowed from `12.5–15.5 s / 732–961 MiB` (`f6559e9`) to `24.05 s` (Codex) / `51.94 s` (adviser re-run) at `1,263 MiB`—flagged for Claude's diff audit (likely copy-on-modify value semantics on the dense kinship store).
 
-## Stage B5 — Brief Final Diff Audit (staged 25 Nov 2026)
+## Stage B5 — Brief Final Diff Audit (complete & verified 25 Nov 2026)
 
-- **Audit workspace:** `~/claude/openpva-audit` (clean, remote-free clone of `785f37e..c4dafb6`, with `output/B4-diff-785f37e-c4dafb6.patch`, `output/B4-hardening-report.md`, and `output/ASSIGNMENT-B5-AUDIT.md`).
-- **Auditor:** Fresh Claude (`Fable`) session — fast read-only GO / FIX-FIRST gatekeeper check (~5–10 min, `output/B5-audit.md`).
+- **Audit workspace & report:** `~/claude/openpva-audit/output/B5-audit.md` (archived under `projects/openpva/work/frozen-B5/claude-B5-audit.md`, 1,097 words; clean `git status`).
+- **Verdict:** **`GO`** — zero blockers across 7 live `< 5 s` reproducers (dense vs. traced vs. mid-run-switched pedigree parity to `5.6e-17` including related/inbred founders, dead-sire retention, strict tamper guard, split-survival edge cases, unseeded RNG advancement, fast-mode parentage).
+- **Woodhen watchpoint:** Claude accepted the value-semantics copy trade-off (`0.59 s -> 0.77 s`, ~1.3× serial for 10 runs, due to matrix copies during `.dense_materialise()` that guarantee tamper detection); gate remains well under `< 60 s / < 2 GB`.
+- **Non-blocking follow-ups recorded for post-2.0.0:** (1) warn/guard against female-only survival tables in `age_sex_rate()` silently returning 0 for males; (2) add a related-founder block crossing 2,000 slots to `scripts/benchmark_large_pedigree.R` and note one-way dense→traced switch; (3) verify live GitHub Actions CI across Ubuntu/macOS/Windows + R 4.1.0 on first push; (4) note in `README.md` that `mate_from_field()` requires refreshing pairing fields each interval.
+- **Pre-landing note:** Replace sprint-scoped `AGENTS.md` in `~/codex/openpva-2.0` with a permanent `OpenPVA 2.0.0` `AGENTS.md` (and note AI-system provenance in `NEWS.md`/commit message) before opening a history-preserving PR onto `BWBrook/OpenPVA`.
 
 ## Next action
 
-Launch Stage B5 final diff audit in a fresh Claude Code Desktop session (`~/claude/openpva-audit`, `Fable`). Once Claude returns `GO` (or we apply any quick final fix), present the release candidate for Barry's approval to push `OpenPVA 2.0.0` onto `BWBrook/OpenPVA`, and roll all 6 banked Workflow B lessons into `BWBrook/research-advisor`.
+Await Barry's approval to: (1) land `OpenPVA 2.0.0` onto `BWBrook/OpenPVA` (recommended: history-preserving `openpva-2.0.0` branch + PR so live GitHub Actions CI verifies Ubuntu/macOS/Windows/R-4.1.0 before merging to `main`), and (2) roll the 6 banked Workflow B lessons + pilot retrospective into `BWBrook/research-advisor`.
 
 ## Banked harness lessons (ready for post-pilot update)
 

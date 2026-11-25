@@ -46,6 +46,8 @@ For **Track B** (project rebase & completion), build a curated single-commit sna
 
 For **Track C** (tabula-rasa research), start from a bare (or nearly bare) single-commit workspace containing only `INPUT.md` (the lead scientist's idea, North Star, motivation and constraints), minimal Track C isolation instructions, and optional hardlinked read-only primary data or reference PDFs under `resources/`—with zero prior code or AI ideation.
 
+For **Track D** (open-source game dev), use either a curated single-commit rebase snapshot (stripping `git log`, `origin`, `HANDOVER.md`, stale roadmaps and build outputs) or a bare greenfield workspace, attaching shared read-only reference stories or art pools under `resources/` via `--resources-dir` so generative art tooling asymmetries never distort Stage 2 builds.
+
 ## 3. Separate adviser and scientist contexts (curated & tabula-rasa isolation)
 
 The adviser runs from this repository. The three independent scientists (Codex, Claude, Gemini) run in their own isolated workspaces and receive only their assignment, common inputs and their own output destination. Never feed this adviser repository, its discussion archive, or another scientist's report into an independent round.

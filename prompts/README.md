@@ -12,6 +12,9 @@ Only the opening assignments are kept as templates. The workflow is adaptive: re
 | [C1-tabula-rasa-conception.md](C1-tabula-rasa-conception.md) | Each of the three independent scientists | Track C Stage 1, from bare (or nearly bare) tabula-rasa workspaces with `INPUT.md` and optional `resources/`. |
 | [BC2-execution.md](BC2-execution.md) | Each of the three independent scientists | Track B or C Stage 2, after agreeing the compact charter (`output/CHARTER.md`) and plain-English gut-check. |
 | [BC3-cross-critique.md](BC3-cross-critique.md) | Three **fresh** scientist sessions | Track B or C Stage 3, read-only adversarial audit over frozen `output/[b3|c3]-packet/` and adviser-verified metrics. |
+| [D1-game-conception.md](D1-game-conception.md) | Each of the three senior game developers | Track D Stage 1 (rebase or greenfield), independent diagnosis, architecture and creative conception. |
+| [D2-game-execution.md](D2-game-execution.md) | Each of the three senior game developers | Track D Stage 2, autonomous build against the frozen Pillar Charter (`output/CHARTER.md`). |
+| [D3-playtest-and-audit.md](D3-playtest-and-audit.md) | Three **fresh** developer sessions | Track D Stage 3, read-only blind exploratory playtest + adversarial code/contract audit over frozen `output/d3-packet/`. |
 
 Render one launch copy per scientist under gitignored `projects/<slug>/work/` and copy each scientist's own prompt into its isolated workspace at `output/ASSIGNMENT-<round>.md` for clean desktop-app or CLI launch. Keep substantive wording and inputs identical across all three; only workspace and output paths differ.
 

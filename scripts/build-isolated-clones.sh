@@ -2,31 +2,31 @@
 set -euo pipefail
 
 # Build a curated or tabula-rasa single-commit, history-free baseline repository
-# for Track A, B or C and optionally clone it into isolated, remote-free
-# scientist workspaces:
+# for Track A, B, C or D and optionally clone it into isolated, remote-free
+# participant workspaces:
 #   <dest-root>/codex/<project>
 #   <dest-root>/claude/<project>
 #   <dest-root>/gemini/<project>
 #
-# Usage (Tracks A & B — curated from an existing repo):
+# Usage (Tracks A, B & D-Rebase — curated from an existing repo):
 #   scripts/build-isolated-clones.sh \
 #     --source-repo /path/to/source \
 #     --manifest /path/to/manifest.txt \
 #     --input-md /path/to/INPUT.md \
 #     --baseline-dir /path/to/baseline \
 #     --project rc-dates \
-#     --workflow A|B \
+#     --workflow A|B|D \
 #     [--resources-dir /path/to/shared-resources] \
 #     [--dest-root "$HOME"] \
 #     [--baseline-only | --clones-only]
 #
-# Usage (Track C — tabula-rasa bare baseline; --source-repo & --manifest optional):
+# Usage (Tracks C & D-Greenfield — bare baseline; --source-repo & --manifest optional):
 #   scripts/build-isolated-clones.sh \
 #     --input-md /path/to/INPUT.md \
 #     --baseline-dir /path/to/baseline \
 #     --project my-idea \
-#     --workflow C \
-#     [--resources-dir /path/to/shared-primary-data-or-pdfs] \
+#     --workflow C|D \
+#     [--resources-dir /path/to/shared-primary-data-or-assets] \
 #     [--dest-root "$HOME"] \
 #     [--baseline-only | --clones-only]
 
@@ -61,7 +61,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 [[ -n "$BASELINE_DIR" && -n "$PROJECT" ]] || { echo "Missing --baseline-dir or --project" >&2; exit 2; }
-[[ "$WORKFLOW" == "A" || "$WORKFLOW" == "B" || "$WORKFLOW" == "C" ]] || { echo "Invalid --workflow (expected A, B or C): $WORKFLOW" >&2; exit 2; }
+[[ "$WORKFLOW" == "A" || "$WORKFLOW" == "B" || "$WORKFLOW" == "C" || "$WORKFLOW" == "D" ]] || { echo "Invalid --workflow (expected A, B, C or D): $WORKFLOW" >&2; exit 2; }
 
 build_baseline() {
   [[ -f "$INPUT_MD" ]] || { echo "Missing INPUT.md: $INPUT_MD" >&2; exit 1; }
@@ -73,7 +73,7 @@ build_baseline() {
   local commit="" short_sha="" count=0
   mkdir -p "$BASELINE_DIR"
 
-  if [[ "$WORKFLOW" != "C" || -n "$SOURCE_REPO" || -n "$MANIFEST" ]]; then
+  if [[ ( "$WORKFLOW" != "C" && "$WORKFLOW" != "D" ) || -n "$SOURCE_REPO" || -n "$MANIFEST" ]]; then
     [[ -d "$SOURCE_REPO/.git" ]] || { echo "Not a git repo: $SOURCE_REPO" >&2; exit 1; }
     [[ -f "$MANIFEST" ]] || { echo "Missing manifest: $MANIFEST" >&2; exit 1; }
 
@@ -174,7 +174,7 @@ EOF
 
 Read `AGENTS.md`, `INPUT.md`, and your active assignment in `output/` before beginning. Obey all isolation boundaries strictly (no Correspondence Board, no peer workspaces, no adviser repository inspection, no cross-workspace memory, no Git remotes or pushes).
 EOF
-  else
+  elif [[ "$WORKFLOW" == "C" ]]; then
     cat > "$BASELINE_DIR/.gitignore" <<'EOF'
 /output/
 /resources/
@@ -197,7 +197,7 @@ This is a bare, single-commit, remote-free tabula-rasa workspace for independent
 
 - Read \`INPUT.md\` and your active assignment in \`output/\` before beginning.
 - Follow the active round's scope strictly: during problem framing and conception (C1), do not write analysis code, modify repository files, install environments, or run simulations—write only your brief to \`output/\`.
-- Work completely independently. Do not read or consult peer workspaces (\`~/codex/\`, \`~/claude/\`, \`~/gemini/\`), the adviser repository (\`~/work/research-advisor\`), or unrelated local repositories.
+- Work completely independently. Do not read or consult peer workspaces (\`~/codex/\`, \`~/claude/\`, \`~/gemini/\`), the adviser repository (\`research-advisor\`), or unrelated local repositories.
 - **Do not query or post to any Correspondence Board** (via MCP or otherwise), read prior chat transcripts, or rely on cross-workspace memory about this project.
 - Do not add Git remotes or push anywhere during independent rounds.
 - If \`resources/\` is present, treat its files as read-only primary data or reference material; never modify or commit them.
@@ -214,6 +214,51 @@ EOF
 
 Read `AGENTS.md`, `INPUT.md`, and your active assignment in `output/` before beginning. Obey all isolation boundaries strictly (no Correspondence Board, no peer workspaces, no adviser repository inspection, no cross-workspace memory, no Git remotes or pushes).
 EOF
+  else
+    cat > "$BASELINE_DIR/.gitignore" <<'EOF'
+/output/
+/resources/
+.DS_Store
+node_modules/
+dist/
+.vite/
+playwright-report/
+test-results/
+.venv/
+__pycache__/
+EOF
+
+    local origin_desc="a bare, single-commit, remote-free workspace for independent open-source game development from scratch."
+    if [[ -n "$short_sha" ]]; then
+      origin_desc="a curated, single-commit, remote-free baseline exported from \`$PROJECT@$short_sha\` ($commit) for independent game-development rebase and completion."
+    fi
+
+    cat > "$BASELINE_DIR/AGENTS.md" <<EOF
+# Isolated Track D workspace — $PROJECT
+
+This is $origin_desc
+
+## Strict boundaries
+
+- Read \`INPUT.md\` and your active assignment in \`output/\` before beginning.
+- Follow the active round's scope strictly: during game conception (D1), do not edit repository files, install packages, run builds/tests, or make commits—write only your brief to \`output/\`.
+- Work completely independently. Do not read or consult peer workspaces (\`~/codex/\`, \`~/claude/\`, \`~/gemini/\`), the adviser repository (\`research-advisor\`), or unrelated local repositories.
+- **Do not query or post to any Correspondence Board** (via MCP or otherwise), read prior chat transcripts, or rely on cross-workspace memory about this game.
+- Do not add Git remotes or push anywhere during independent rounds.
+- If \`resources/\` is present, treat its files as read-only reference texts or shared game assets; never modify or commit them directly into \`resources/\`.
+EOF
+
+    cat > "$BASELINE_DIR/CLAUDE.md" <<'EOF'
+# Track D workspace instructions
+
+Read `AGENTS.md`, `INPUT.md`, and your active assignment in `output/` before beginning. Obey all isolation boundaries strictly (no Correspondence Board, no peer workspaces, no adviser repository inspection, no cross-workspace memory, no Git remotes or pushes).
+EOF
+
+    cat > "$BASELINE_DIR/GEMINI.md" <<'EOF'
+# Track D workspace instructions
+
+Read `AGENTS.md`, `INPUT.md`, and your active assignment in `output/` before beginning. Obey all isolation boundaries strictly (no Correspondence Board, no peer workspaces, no adviser repository inspection, no cross-workspace memory, no Git remotes or pushes).
+EOF
   fi
 
   git -C "$BASELINE_DIR" init -q -b main
@@ -221,8 +266,10 @@ EOF
   local commit_msg="Curated Track $WORKFLOW baseline for $PROJECT"
   if [[ -n "$short_sha" ]]; then
     commit_msg="Curated Track $WORKFLOW baseline from $PROJECT@$short_sha"
-  else
+  elif [[ "$WORKFLOW" == "C" ]]; then
     commit_msg="Tabula-rasa Track C baseline for $PROJECT"
+  else
+    commit_msg="Greenfield Track D baseline for $PROJECT"
   fi
   git -C "$BASELINE_DIR" -c commit.gpgsign=false commit -q -m "$commit_msg"
 
@@ -258,8 +305,10 @@ build_clones() {
     if [[ -n "$RESOURCES_DIR" ]]; then
       mkdir -p "$target/resources"
       if ! cp -al "$RESOURCES_DIR/." "$target/resources/" 2>/dev/null; then
-        echo "Note: hardlink copy (cp -al) unavailable for $target/resources; falling back to standard copy" >&2
-        cp -R -p "$RESOURCES_DIR/." "$target/resources/"
+        if ! cp -cR "$RESOURCES_DIR/." "$target/resources/" 2>/dev/null; then
+          echo "Note: hardlink/APFS clone unavailable for $target/resources; falling back to standard copy" >&2
+          cp -R -p "$RESOURCES_DIR/." "$target/resources/"
+        fi
       fi
     fi
     echo "Created isolated remote-free clone: $target"

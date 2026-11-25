@@ -1,6 +1,6 @@
 # Current state — OpenPVA (Workflow B)
 
-Updated: 25 November 2026, Australia/Hobart. **Round B2 complete and independently verified across all three scientists (clean `git archive` builds, `R CMD check --as-cran --no-manual`, `testthat`, and uniform process-tree RSS scaling gates); frozen B2 reports/preregistrations archived; ready for Barry's B3 / adjudication decision.**
+Updated: 25 November 2026, Australia/Hobart. **Round B2 verified & frozen; lean read-only Round B3 cross-critique staged identically across all three workspaces.**
 
 - **Workflow:** B — Original research / scientific-software completion from a partially developed repository
 - **Adviser:** Gemini 4 Neon (separate from the three independent scientists)
@@ -35,10 +35,11 @@ Updated: 25 November 2026, Australia/Hobart. **Round B2 complete and independent
 
 - Frozen B2 reports, preregistrations, and `HEAD` SHAs archived under gitignored `projects/openpva/work/frozen-B2/{codex,claude,gemini}/`.
 - Independent clean `git archive HEAD` builds, `R CMD check --as-cran --no-manual`, `testthat`, and uniform process-tree RSS benchmarks completed in gitignored `projects/openpva/work/verify/`; all three scientist workspaces remain untouched with clean `git status` and zero remotes.
+- Frozen 3.5 MB B3 review packet (`output/b3-packet/{B3-VERIFIED-METRICS.md,candidate-codex,candidate-claude,candidate-gemini}`) and identical `output/ASSIGNMENT-B3.md` (`d8459079…`) staged across all three workspaces with spotless `git status`.
 
 ## Next action
 
-Await Barry's choice: run a **lean, read-only Round B3 cross-critique** (recommended—fast adversarial code/science audit of the three frozen B2 builds, especially stress-testing Claude's `2.0.0` backbone before adoption) OR move straight to adopting and hardening Claude `OpenPVA 2.0.0` for Sprint 2 / landing on `BWBrook/OpenPVA`.
+Launch Round B3 independently in each scientist's desktop app (fresh session recommended; fast read-only audit, ~10 min, no heavy compute). Once all three `output/B3-critique.md` files exist on disk, synthesize findings with Barry to lock the final hardening/integration checklist for adopting `OpenPVA 2.0.0` (or whichever backbone wins B3 scrutiny) onto `BWBrook/OpenPVA`.
 
 ## Banked harness lessons (deferred until post-B3 update)
 

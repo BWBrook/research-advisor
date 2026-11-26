@@ -1,6 +1,6 @@
 # Current state — OpenPVA `v2.1.0` (Track B, Round B1 ready)
 
-Updated: 26 November 2026, Australia/Hobart. **`OpenPVA 2.0.1` (`55b40df`) is merged on `BWBrook/OpenPVA` `main` after 4/4 green CI and Gemini Carbon's `GO` diff audit. Curated single-commit, remote-free `openpva-2.1` clones (`8025928`, 71 manifest files) and identical `output/ASSIGNMENT-B1.md` briefs are staged across Codex, Claude, and Gemini — ready for Barry to launch the fresh trio.**
+Updated: 26 November 2026, Australia/Hobart. **Charter adopted (`charter.md`: `litedown::vignette` HTML with Sweave fallback, non-perturbing neutral gene-drop in `v2.1.0`, monitored maintainer email `barry.brook@utas.edu.au`). `litedown 1.0` (`xfun 0.62`) verified on WSL host R 4.6.2, and identical `output/CHARTER.md` + `output/ASSIGNMENT-B2.md` are staged across all three isolated clones — ready for Barry to launch Stage B2.**
 
 - **Track:** B — Project rebase & milestone completion (second cycle, starting clean from `OpenPVA 2.0.1`)
 - **Adviser:** Gemini 4 Neon (separate from the three independent scientists)
@@ -14,14 +14,24 @@ Updated: 26 November 2026, Australia/Hobart. **`OpenPVA 2.0.1` (`55b40df`) is me
 - **Builder:** OpenAI Codex (`gpt-6.2-astra`, `c4f737a`); **Read-only auditor:** Google Gemini 4 Carbon (`Verdict: GO`, zero blockers).
 - **A1–A4 resolved:** `age_sex_rate(missing_sex = c("error", "zero"))`, `mate_from_field(stale = c("error", "unpaired"))`, pure-R dense pedigree sibling reuse & exact-size matrix growth (Woodhen strict gate `34.55 s / 1,263 MiB → 32.04 s / 1,214 MiB`, serial 32-rep `-18%`, byte-identical outputs), and independent crossing-2,000 related-founder tabular oracle (`0` kinship/F error, `4.34e-19` mean-kinship error).
 
-## Stage B1 — Independent Design & API Conception (`v2.1.0`)
+## Stage B1 — Independent Design & API Conception (`v2.1.0`, complete 26 Nov 2026)
 
-| Family | Model | Workspace | B1 status |
+| Family | Model | Workspace | B1 status & frozen copy |
 |---|---|---|---|
-| **OpenAI (Codex)** | `gpt-6.2-astra` | `~/codex/openpva-2.1` (`8025928`) | Staged (`output/ASSIGNMENT-B1.md`), ready to launch |
-| **Anthropic (Claude)** | `Fable` | `~/claude/openpva-2.1` (`8025928`) | Staged (`output/ASSIGNMENT-B1.md`), ready to launch |
-| **Google (Gemini)** | `Gemini 4 Carbon (High)` | `~/gemini/openpva-2.1` (`8025928`) | Staged (`output/ASSIGNMENT-B1.md`), ready to launch |
+| **OpenAI (Codex)** | `gpt-6.2-astra` | `~/codex/openpva-2.1` (`8025928`) | Complete & frozen (`1,595` w, clean git) |
+| **Anthropic (Claude)** | `Fable 5.2` | `~/claude/openpva-2.1` (`8025928`) | Complete & frozen (`1,745` w, clean git) |
+| **Google (Gemini)** | `Gemini 4 Carbon (High)` | `~/gemini/openpva-2.1` (`8025928`) | Complete & frozen (`1,677` w, clean git) |
+
+### Key B1 synthesis (independent catches across all three)
+- **All three caught:** `DESCRIPTION` maintainer email (`users.noreply.github.com`) is CRAN-ineligible; `run_pva_ensemble()` returns a bare `data.frame` (needs `c("pva_ensemble", "data.frame")`); CI skips vignette builds (`--no-build-vignettes`); exact `FGE = 1 / (2 * mean_kinship)` belongs directly in `summarise_pedigree()`; AR(1) state must live in `state$globals` (never closures) with pivoted Cholesky for $\rho = 1$ and R-level accumulation to avoid BLAS drift; kinship tie-breaking must round to `1e-12` for dense/traced parity.
+- **Unique catches:** **Claude** caught `.census_matrix()` rejecting `NA` when genetic census metrics hit extinction (`N = 0`), stale `inst/CITATION` (`2.0.0`), and the monoecious-only trap in $H_t = H_0(1 - 1/(2N_e))^t$ (exact oracle is conditional on pedigree: $E[H_e] = 1 - \bar{K}$, $E[H_o] = 1 - \bar{F}$). **Gemini** caught `scripts/build_rd.R` lacking S3 `\method{}{}` support for `plot.*`, chunk-vectorised traced cross-sex kinship, and AR(1) trend lag bias ($Z_{t-1} = Y_{t-1} - \mu(t-1)$). **Codex** contributed the exact 16-outcome full-sibling gene-drop oracle (`AB × CD`), refusing marker init on unexplained supplied founder kinships, and defining allelic retention strictly against initial founder labels.
+
+## Stage B2 — Independent Autonomous Execution (`v2.1.0`, staged 26 Nov 2026)
+
+- **Active Charter:** [charter.md](charter.md) (copied to gitignored `output/CHARTER.md` in each clone).
+- **Host pre-flight verified (26 Nov 2026):** R `4.6.2`, `testthat`, `pkgload`, `litedown 1.0` (`litedown::vignette`), `xfun 0.62`, `pdflatex`, `xelatex`, `qpdf`.
+- **Staged workspaces:** `~/codex/openpva-2.1`, `~/claude/openpva-2.1`, `~/gemini/openpva-2.1` (all clean on single-commit `8025928`, remote-free, with `output/CHARTER.md` and `output/ASSIGNMENT-B2.md`).
 
 ## Next action
 
-Launch three **fresh** independent scientist sessions (Codex, Claude, Gemini) on `~/{codex,claude,gemini}/openpva-2.1` to write `output/B1-conception.md` covering the four `v2.1.0` pillars (managed genetics/min-kinship + gene-drop, correlated spatiotemporal environments, base-R plotting, GAPPS/Vortex Rosetta Stone vignette + CRAN readiness). Once all three report back, compare conceptions and lock the plain-English `v2.1.0` Charter before B2.
+Launch all three scientists into Stage B2 (`output/ASSIGNMENT-B2.md`) to implement, test, benchmark, commit on local `main`, and write `output/B2-report.md`. Once all three finish, independently verify all frozen `git archive HEAD` snapshots on disk and stage fresh-session read-only B3 cross-critique.

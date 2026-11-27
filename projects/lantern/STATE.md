@@ -1,6 +1,6 @@
 # Current state — Lantern (Track D pilot)
 
-Updated: 27 November 2026, Australia/Hobart. **Pillar Charter locked ([charter.md](charter.md)) and Stage D2 staged across all three isolated workspaces (ready for Founder gut-check & desktop launch).**
+Updated: 27 November 2026, Australia/Hobart. **Stage D2 complete and independently verified across all three frozen builds; ready for Founder hands-on playtest (ports `4174`/`4175`/`4176`) and Stage D3 blind playtest + code audit.**
 
 - **Track:** D — Open-source game development (D-Rebase pilot)
 - **Founder / Vision Lead:** Barry W. Brook
@@ -11,13 +11,15 @@ Updated: 27 November 2026, Australia/Hobart. **Pillar Charter locked ([charter.m
 - **Active Charter:** [charter.md](charter.md) (adopted 27 Nov 2026)
 - **Shared read-only resources (`resources/stone-age-1897/`):** Complete 5-instalment *Idler* (1897) text of H. G. Wells's *A Story of the Stone Age* (~23,140 words from Project Gutenberg Australia) + 15 original 1897 Cosmo Rowe (1877–1952) period illustrations (public domain in AU & US; modern PGA Bing covers excluded).
 
-## Senior Game Developers (isolated remote-free clones)
+## Senior Game Developers — Verified D1–D2 Summary
 
-| Family | Model | Workspace | D1 Status | D2 Status |
-|---|---|---|---|---|
-| **OpenAI (Codex)** | `Sol 6.2` (max reasoning) | `~/codex/lantern` | Complete & frozen (`1,715` w) | Staged (`output/CHARTER.md`, `output/ASSIGNMENT-D2.md`, port `4174`) |
-| **Anthropic (Claude)** | `Opus 5.5` (max reasoning) | `~/claude/lantern` | Complete & frozen (`1,992` w) | Staged (`output/CHARTER.md`, `output/ASSIGNMENT-D2.md`, port `4175`) |
-| **Google (Gemini)** | `Gemini 4 Neon` (extra high reasoning) | `~/gemini/lantern` | Complete & frozen (`1,825` w) | Staged (`output/CHARTER.md`, `output/ASSIGNMENT-D2.md`, port `4176`) |
+| Family | Model | D2 commit | Cartridge format | `src/` LOC | Verified tests & E2E | Prod JS+CSS gzip |
+|---|---|---|---|---|---|---|
+| **OpenAI (Codex)** | `Sol 6.2` (max) | `d7783e6` | Pure `cartridge.json` + `import.meta.glob` | `6,344` | `tsc` OK · **213/213** Vitest · **7/7** E2E | **50.14 KiB** |
+| **Anthropic (Claude)** | `Opus 5.5` (max) | `7cacb5d` | Pure `cartridge.json` + `import.meta.glob` | `7,995` | `tsc` OK · **241/241** Vitest · **9/9** E2E | **78.61 KiB** |
+| **Google (Gemini)** | `Gemini 4 Neon` (XHigh) | `d3062fe` | JSON-serializable TS data + static registry | `10,178` | `tsc` OK · **187/187** Vitest · **7/7** E2E | **64.37 KiB** |
+
+All three builds passed clean `git archive HEAD` verification (`npm ci --prefer-offline`, zero runtime dependencies / Phaser removed, zero boundary leaks in `src/engine` & `src/ui`, zero console/page errors across 24 desktop `1280×800` + mobile `390×844` Playwright screenshots).
 
 ## Completed: Stage D1 (Independent game conception & rebase)
 
@@ -47,7 +49,9 @@ All three developers obeyed every read-only and isolation boundary (`commits=1`,
 - **2026-11-25:** Locked Founder's North Star (*1987 Melbourne House C64 / INGLISH "magical scanner" browser engine*), two proof cartridges (*The Harrow Mine Job* + tractable playable slice of H. G. Wells's *A Story of the Stone Age* [1897], faithful to Wells's Victorian conception), decoupled art policy (keep 3 existing Harrow PNGs + shared `resources/` pool for *Stone Age*, no ad hoc image generation inside D2), and decision to skip Founder playtest of September `1545181` in favour of saving hands-on playtest energy for D2 candidates.
 - **2026-11-27:** Read, audited, and froze all three D1 briefs (`Sol 6.2`, `Opus 5.5`, `Gemini 4 Neon`; all clean read-only isolation).
 - **2026-11-27:** Locked Pillar Charter ([charter.md](charter.md)), completed MacBook toolchain/Playwright pre-flight (Node `v26.13.1`, pre-cached Chromium/Firefox/WebKit, non-colliding local ports `4174`/`4175`/`4176` + `reuseExistingServer: false`), and staged `output/CHARTER.md` + `output/ASSIGNMENT-D2.md` across all three clones.
+- **2026-11-27:** Independently froze and verified all three D2 builds (`Codex d7783e6`, `Claude 7cacb5d`, `Gemini d3062fe`) on clean `git archive HEAD` extractions; all three passed every automated Charter gate (`0` runtime deps, `50–79 KiB` gzipped JS+CSS, `187–241` Vitest, `7–9` Chromium E2E, `0` console errors across 24 uniform screenshots).
 
 ## Next action
 
-After Barry's 1-minute gut-check on the Pillar Charter, launch D2 independently across Sol 6.2, Opus 5.5, and Gemini 4 Neon, then verify frozen builds, bundle sizes, and Playwright screenshots before Barry's 5–10 min hands-on playtests and Stage D3 blind playtest + code audit.
+1. Founder hands-on playtest (5–10 min per candidate on local preview ports `4174` Codex, `4175` Claude, `4176` Gemini).
+2. Stage fresh-session, read-only **D3 blind playtest + adversarial code/contract audit** (`output/d3-packet/` + `VERIFIED-METRICS.md` + Founder playtest notes) across all three families.

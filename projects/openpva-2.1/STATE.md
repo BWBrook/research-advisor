@@ -1,6 +1,6 @@
 # Current state — OpenPVA `v2.1.0` (Track B, Round B1 ready)
 
-Updated: 27 November 2026, Australia/Hobart. **All three B2 submissions (`codex@f9d4fd3`, `claude@cbd996a`, `gemini@01c91d8`) passed uniform independent adviser verification (`R CMD build` with `litedown` HTML vignette, `R CMD check --as-cran --no-manual` `0E/0W/1N`, Woodhen `strict` gate `15.9–16.8 s`, large-pedigree oracle `0` error). Frozen read-only `output/b3-packet/` and `output/ASSIGNMENT-B3.md` are staged across all three workspaces — ready for Barry to launch three brand-new fresh-session B3 reviewers.**
+Updated: 27 November 2026, Australia/Hobart. **Stage B3 fresh-session cross-critique complete with unanimous 3-for-3 backbone verdict: `candidate-claude` (`cbd996a`). All claimed B3 blockers were independently reproduced live by the adviser, and Stage B4 Hardening & Harvest workspace (`~/codex/openpva-2.1-rc`) is staged for Codex (`gpt-6.2-astra`).**
 
 - **Track:** B — Project rebase & milestone completion (second cycle, starting clean from `OpenPVA 2.0.1`)
 - **Adviser:** Gemini 4 Neon (separate from the three independent scientists)
@@ -37,10 +37,20 @@ Updated: 27 November 2026, Australia/Hobart. **All three B2 submissions (`codex@
 | **Claude** | `Fable 5.2` | `cbd996a` | 3,938 / 53+6 | `9.70 s` (`rosetta.html`); `0E/0W/1N` (`2,184 PASS`, `37 s`) | `16.51 s`, `1,230 MiB` | `11.57 s` (`0/0/4.3e-19`) |
 | **Gemini** | `Gemini 4 Carbon High` | `01c91d8` | 4,614 / 55+7 | `12.44 s` (`rosetta-stone.html`); `0E/0W/1N` (`1,792 PASS`, `47 s`) | `16.83 s`, `1,216 MiB` | `11.57 s` (`0/0/4.3e-19`) |
 
-## Stage B3 — Fresh-Session Read-Only Cross-Critique (staged 27 Nov 2026)
+## Stage B3 — Fresh-Session Read-Only Cross-Critique (adjudicated 27 Nov 2026)
 
-- Frozen read-only `output/b3-packet/` (containing `VERIFIED-METRICS.md` + frozen `candidate-{codex,claude,gemini}/`) and `output/ASSIGNMENT-B3.md` are staged inside `~/codex/openpva-2.1`, `~/claude/openpva-2.1`, and `~/gemini/openpva-2.1` (no preliminary winner imposed; all three builds are strong and genuinely distinct).
+| Reviewer | Model | Critique words | Recommended backbone | Key unique catches |
+|---|---|---|---|---|
+| **Codex** | `gpt-6.2-astra` | 1,882 w (frozen) | **`candidate-claude`** | Storage-threshold mating flip on $2^{-30}$ midpoint; pre-built ensemble builder substream collision; Box–Muller cached normal deviate wiped by `RNGkind()`; patch-named `sd` reversed in `env_ar1()`; male initial mother (`pedigree = FALSE`); parented introduction inheriting native alleles; corrupted allele bypass at strict entry; exact 49-founder FGE; negative-newborn / discontinuous accounting |
+| **Claude** | `Fable 5.2` | 1,866 w (frozen) | **`candidate-claude`** | Codex `par(mfrow)` 2-page PDF ejection & deterministic lowest-ID sire skew; Gemini pre-built replicate genotype cloning & double-call AR(1) lag leak; self-audit flagging `par("usr")` reset, missing `mean_kinship` priority, `n_observed` vs `n_extant`, weakened 4,000-rep oracle, and `env_trend()` bare vector ambiguity |
+| **Gemini** | `Gemini 4 Carbon High` | 1,723 w (frozen) | **`candidate-claude`** | Gemini `done[0L]` half-founder crash/recycling & `final_mean_mcse` zero-width bug; Codex unvalidated `state$markers` & unseeded `key = 1L`; clean harvest blueprint (`by = NULL`, `spatial_correlation()`, `add = TRUE`, `print.pva_ensemble()`, `kinship_matrix(against = )`) |
+
+- **Adviser live reproduction (27 Nov 2026):** Independently reproduced all blockers live on `candidate-claude` (`limit=2000 -> TRUE` vs `limit=1/4 -> FALSE`; `rep1_init_vs_newborn_identical = TRUE` across 32 loci; Box–Muller `2.529971` vs `1.634121` AND verified direct `.Random.seed` swap without `RNGkind()` restores exact `2.529971`; `env[B]/env[A] = 0.3333` vs `3.0`; male initial mother accepted; `49.000000000000007` FGE; `n_alive = 7, he = NA` accepted; `par("usr")` reset to `0,1,0,1`; `allele = 99L` accepted; parented introduction inheriting native alleles).
+
+## Stage B4 — Hardening & Targeted Harvest Sprint (staged 27 Nov 2026)
+
+- **Integration workspace:** `~/codex/openpva-2.1-rc` (isolated, remote-free clone initialized from frozen `candidate-claude@cbd996a`, with read-only `output/harvest-refs/{codex,gemini}/` and `output/ASSIGNMENT-B4-HARDENING.md` covering all 8 verified blocker/harvest items and explicit exclusions).
 
 ## Next action
 
-Launch three **brand-new fresh** scientist sessions (Codex, Claude, Gemini) on `~/{codex,claude,gemini}/openpva-2.1` to run the read-only B3 cross-critique and save `output/B3-critique.md`. Once all three report back, adjudicate on reproduced evidence and run a single B4 hardening/harvest sprint + short B5 diff audit before PR #3 and CRAN submission.
+Launch a fresh **Codex (`gpt-6.2-astra`)** session on `~/codex/openpva-2.1-rc` to complete Stage B4 (`output/ASSIGNMENT-B4-HARDENING.md`), then run a short read-only **Claude (`Fable`)** B5 diff audit (`GO / FIX-FIRST`) before opening PR #3 on `BWBrook/OpenPVA` for live 4-job GitHub Actions CI and CRAN submission prep.

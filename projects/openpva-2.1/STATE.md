@@ -1,6 +1,6 @@
 # Current state — OpenPVA `v2.1.0` (Track B, Round B1 ready)
 
-Updated: 26 November 2026, Australia/Hobart. **Charter adopted (`charter.md`: `litedown::vignette` HTML with Sweave fallback, non-perturbing neutral gene-drop in `v2.1.0`, monitored maintainer email `barry.brook@utas.edu.au`). `litedown 1.0` (`xfun 0.62`) verified on WSL host R 4.6.2, and identical `output/CHARTER.md` + `output/ASSIGNMENT-B2.md` are staged across all three isolated clones — ready for Barry to launch Stage B2.**
+Updated: 27 November 2026, Australia/Hobart. **All three B2 submissions (`codex@f9d4fd3`, `claude@cbd996a`, `gemini@01c91d8`) passed uniform independent adviser verification (`R CMD build` with `litedown` HTML vignette, `R CMD check --as-cran --no-manual` `0E/0W/1N`, Woodhen `strict` gate `15.9–16.8 s`, large-pedigree oracle `0` error). Frozen read-only `output/b3-packet/` and `output/ASSIGNMENT-B3.md` are staged across all three workspaces — ready for Barry to launch three brand-new fresh-session B3 reviewers.**
 
 - **Track:** B — Project rebase & milestone completion (second cycle, starting clean from `OpenPVA 2.0.1`)
 - **Adviser:** Gemini 4 Neon (separate from the three independent scientists)
@@ -26,12 +26,21 @@ Updated: 26 November 2026, Australia/Hobart. **Charter adopted (`charter.md`: `l
 - **All three caught:** `DESCRIPTION` maintainer email (`users.noreply.github.com`) is CRAN-ineligible; `run_pva_ensemble()` returns a bare `data.frame` (needs `c("pva_ensemble", "data.frame")`); CI skips vignette builds (`--no-build-vignettes`); exact `FGE = 1 / (2 * mean_kinship)` belongs directly in `summarise_pedigree()`; AR(1) state must live in `state$globals` (never closures) with pivoted Cholesky for $\rho = 1$ and R-level accumulation to avoid BLAS drift; kinship tie-breaking must round to `1e-12` for dense/traced parity.
 - **Unique catches:** **Claude** caught `.census_matrix()` rejecting `NA` when genetic census metrics hit extinction (`N = 0`), stale `inst/CITATION` (`2.0.0`), and the monoecious-only trap in $H_t = H_0(1 - 1/(2N_e))^t$ (exact oracle is conditional on pedigree: $E[H_e] = 1 - \bar{K}$, $E[H_o] = 1 - \bar{F}$). **Gemini** caught `scripts/build_rd.R` lacking S3 `\method{}{}` support for `plot.*`, chunk-vectorised traced cross-sex kinship, and AR(1) trend lag bias ($Z_{t-1} = Y_{t-1} - \mu(t-1)$). **Codex** contributed the exact 16-outcome full-sibling gene-drop oracle (`AB × CD`), refusing marker init on unexplained supplied founder kinships, and defining allelic retention strictly against initial founder labels.
 
-## Stage B2 — Independent Autonomous Execution (`v2.1.0`, staged 26 Nov 2026)
+## Stage B2 — Independent Autonomous Execution (`v2.1.0`, verified 27 Nov 2026)
 
-- **Active Charter:** [charter.md](charter.md) (copied to gitignored `output/CHARTER.md` in each clone).
-- **Host pre-flight verified (26 Nov 2026):** R `4.6.2`, `testthat`, `pkgload`, `litedown 1.0` (`litedown::vignette`), `xfun 0.62`, `pdflatex`, `xelatex`, `qpdf`.
-- **Staged workspaces:** `~/codex/openpva-2.1`, `~/claude/openpva-2.1`, `~/gemini/openpva-2.1` (all clean on single-commit `8025928`, remote-free, with `output/CHARTER.md` and `output/ASSIGNMENT-B2.md`).
+- **Active Charter:** [charter.md](charter.md)
+- **Baseline `v2.0.1` (`8025928`) quiet-host Woodhen gate:** `13.49 / 16.20 s` wall, `1,200–1,205 MiB` tree RSS (`119.4`, reconciled `TRUE`).
+
+| Family | Model | B2 commit | LOC / exports | Build (vignette) & CRAN check | Woodhen `strict` gate | Large pedigree |
+|---|---|---|---|---|---|---|
+| **Codex** | `gpt-6.2-astra` | `f9d4fd3` | 3,752 / 51+6 | `5.46 s` (`rosetta-stone.html`); `0E/0W/1N` (`1,274 PASS`, `44 s`) | `15.91–19.05 s`, `1,210–1,213 MiB` | `13.50 s` (`0/0/4.3e-19`) |
+| **Claude** | `Fable 5.2` | `cbd996a` | 3,938 / 53+6 | `9.70 s` (`rosetta.html`); `0E/0W/1N` (`2,184 PASS`, `37 s`) | `16.51 s`, `1,230 MiB` | `11.57 s` (`0/0/4.3e-19`) |
+| **Gemini** | `Gemini 4 Carbon High` | `01c91d8` | 4,614 / 55+7 | `12.44 s` (`rosetta-stone.html`); `0E/0W/1N` (`1,792 PASS`, `47 s`) | `16.83 s`, `1,216 MiB` | `11.57 s` (`0/0/4.3e-19`) |
+
+## Stage B3 — Fresh-Session Read-Only Cross-Critique (staged 27 Nov 2026)
+
+- Frozen read-only `output/b3-packet/` (containing `VERIFIED-METRICS.md` + frozen `candidate-{codex,claude,gemini}/`) and `output/ASSIGNMENT-B3.md` are staged inside `~/codex/openpva-2.1`, `~/claude/openpva-2.1`, and `~/gemini/openpva-2.1` (no preliminary winner imposed; all three builds are strong and genuinely distinct).
 
 ## Next action
 
-Launch all three scientists into Stage B2 (`output/ASSIGNMENT-B2.md`) to implement, test, benchmark, commit on local `main`, and write `output/B2-report.md`. Once all three finish, independently verify all frozen `git archive HEAD` snapshots on disk and stage fresh-session read-only B3 cross-critique.
+Launch three **brand-new fresh** scientist sessions (Codex, Claude, Gemini) on `~/{codex,claude,gemini}/openpva-2.1` to run the read-only B3 cross-critique and save `output/B3-critique.md`. Once all three report back, adjudicate on reproduced evidence and run a single B4 hardening/harvest sprint + short B5 diff audit before PR #3 and CRAN submission.

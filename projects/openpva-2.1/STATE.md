@@ -1,6 +1,6 @@
 # Current state — OpenPVA `v2.1.0` (Track B, Round B1 ready)
 
-Updated: 27 November 2026, Australia/Hobart. **Stage B3 fresh-session cross-critique complete with unanimous 3-for-3 backbone verdict: `candidate-claude` (`cbd996a`). All claimed B3 blockers were independently reproduced live by the adviser, and Stage B4 Hardening & Harvest workspace (`~/codex/openpva-2.1-rc`) is staged for Codex (`gpt-6.2-astra`).**
+Updated: 27 November 2026, Australia/Hobart. **Stage B4 Hardening & Harvest (`38d6757` by Codex `gpt-6.2-astra`) passed all independent adviser checks from a clean `git archive HEAD` (`2,447 PASS` in `43 s`, `0E/0W/1N` as-CRAN with HTML vignette, Woodhen `16.12 s / 1,210 MiB`, all 10 live B3 blockers verified fixed, 4,200 LOC pure base R — no Distillation pass needed). Stage B5 read-only diff audit workspace (`~/claude/openpva-2.1-audit`) is staged for Claude (`Fable`).**
 
 - **Track:** B — Project rebase & milestone completion (second cycle, starting clean from `OpenPVA 2.0.1`)
 - **Adviser:** Gemini 4 Neon (separate from the three independent scientists)
@@ -47,10 +47,22 @@ Updated: 27 November 2026, Australia/Hobart. **Stage B3 fresh-session cross-crit
 
 - **Adviser live reproduction (27 Nov 2026):** Independently reproduced all blockers live on `candidate-claude` (`limit=2000 -> TRUE` vs `limit=1/4 -> FALSE`; `rep1_init_vs_newborn_identical = TRUE` across 32 loci; Box–Muller `2.529971` vs `1.634121` AND verified direct `.Random.seed` swap without `RNGkind()` restores exact `2.529971`; `env[B]/env[A] = 0.3333` vs `3.0`; male initial mother accepted; `49.000000000000007` FGE; `n_alive = 7, he = NA` accepted; `par("usr")` reset to `0,1,0,1`; `allele = 99L` accepted; parented introduction inheriting native alleles).
 
-## Stage B4 — Hardening & Targeted Harvest Sprint (staged 27 Nov 2026)
+## Stage B4 — Hardening & Targeted Harvest Sprint (complete & verified 27 Nov 2026)
 
-- **Integration workspace:** `~/codex/openpva-2.1-rc` (isolated, remote-free clone initialized from frozen `candidate-claude@cbd996a`, with read-only `output/harvest-refs/{codex,gemini}/` and `output/ASSIGNMENT-B4-HARDENING.md` covering all 8 verified blocker/harvest items and explicit exclusions).
+- **Integration workspace & commit:** `~/codex/openpva-2.1-rc`, commit `38d6757` (vs. B4 base `cf0e65b`; 37 files, `+1,107 / -343` lines; 4,200 LOC across 14 `R/` files [+262 net LOC], 54 exports + 7 S3 methods, clean `git status`, zero remotes, `gitleaks`: `0` leaks).
+- **Independently verified by adviser (clean `git archive HEAD`):**
+  - `R CMD build .` (with `litedown` HTML vignette `rosetta.html`, `224 KB`): **`10.06 s`**
+  - `R CMD check --as-cran --no-manual`: **`0 errors, 0 warnings, 1 NOTE`** (`New submission` only), **`2,447 PASS / 0 FAIL / 0 WARN / 0 SKIP`** (`43 s` wall, full 6,000-rep extinction oracle restored), vignette rebuild `OK`.
+  - Woodhen `strict` gate (`K = 30`, 1,000 × 40-yr, 8 fork): **`16.12 s` wall (`15.00 s` R), `1,209.8 MiB` tree RSS**, `119.4` (`108.0–123.6`), `reconciled = TRUE` (zero regression vs. `v2.0.1`).
+  - Large pedigree (`2500 / 5000 / 1998→2002`): **`12.85 s`**, oracle errors `0`, `0`, `4.34e-19`.
+  - **All 10 live B3 blocker reproducers re-run against `38d6757`:** **10/10 VERIFIED FIXED** (boundary mating parity across 2000/1/4, disjoint pre-built ensemble substreams, Box–Muller cached normal preserved, patch-named `sd` ratio `3.0`, male initial mother rejected, exact 49-founder FGE & living `NA` rejected, active `par("usr")`, out-of-range allele rejected, negative-newborn accounting flagged, parented marker introduction rejected).
+  - Real R 4.1.0 CRAN check & PSOCK floor verified by builder (`2,447 PASS`, 0 err / 0 warn, vignette rebuilt).
+- **Distillation gate (`95cf759`):** Skipped — net growth over Claude's backbone is only `+262` LOC across all 8 fixes/harvests with zero accidental complexity bloat.
+
+## Stage B5 — Brief Final Diff Audit (staged 27 Nov 2026)
+
+- **Audit workspace:** `~/claude/openpva-2.1-audit` (clean remote-free clone at `38d6757`, with read-only `output/B4-diff-cf0e65b-38d6757.patch`, `output/B4-hardening-report.md`, and `output/ASSIGNMENT-B5-AUDIT.md`).
 
 ## Next action
 
-Launch a fresh **Codex (`gpt-6.2-astra`)** session on `~/codex/openpva-2.1-rc` to complete Stage B4 (`output/ASSIGNMENT-B4-HARDENING.md`), then run a short read-only **Claude (`Fable`)** B5 diff audit (`GO / FIX-FIRST`) before opening PR #3 on `BWBrook/OpenPVA` for live 4-job GitHub Actions CI and CRAN submission prep.
+Launch a fresh **Claude (`Fable`)** session on `~/claude/openpva-2.1-audit` for the read-only B5 `GO / FIX-FIRST` diff audit (`output/B5-audit.md`). Once it returns `GO`, open history-preserving PR #3 on `BWBrook/OpenPVA` for live 4-job GitHub Actions CI, merge, tag `v2.1.0` + Zenodo DOI, and prep CRAN submission.

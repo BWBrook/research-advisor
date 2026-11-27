@@ -15,6 +15,7 @@ Only the opening assignments are kept as templates. The workflow is adaptive: re
 | [D1-game-conception.md](D1-game-conception.md) | Each of the three senior game developers | Track D Stage 1 (rebase or greenfield), independent diagnosis, architecture and creative conception. |
 | [D2-game-execution.md](D2-game-execution.md) | Each of the three senior game developers | Track D Stage 2, autonomous build against the frozen Pillar Charter (`output/CHARTER.md`). |
 | [D3-playtest-and-audit.md](D3-playtest-and-audit.md) | Three **fresh** developer sessions | Track D Stage 3, read-only blind exploratory playtest + adversarial code/contract audit over frozen `output/d3-packet/`. |
+| [distillation.md](distillation.md) | One builder + short legibility audit (or parallel trio for Track C theory/models) | Optional post-validation distillation pass on Tracks B, C or D against a locked verified oracle (`docs/operating-notes.md` §0). |
 
 Render one launch copy per scientist under gitignored `projects/<slug>/work/` and copy each scientist's own prompt into its isolated workspace at `output/ASSIGNMENT-<round>.md` for clean desktop-app or CLI launch. Keep substantive wording and inputs identical across all three; only workspace and output paths differ.
 

@@ -54,5 +54,6 @@ Give the Founder a **1-minute plain-English gut-check** (*"what the developers a
 ## Stage 4–5 — Hardening, art/polish pass, diff audit & release (D4–D5)
 
 - **D4 hardening sprint:** Export the chosen backbone to a fresh remote-free integration clone (`~/codex/<slug>-integration` or equivalent) to fix verified blockers, harvest targeted peer wins, and integrate any dedicated room-art or prose-polish pass cleanly.
+- **Optional post-hardening distillation (only if warranted):** If multi-round iteration left dead scaffolding, redundant state plumbing, or bloated modules, run one bounded [distillation pass](../prompts/distillation.md) gated against the locked test suite, golden paths, and playfeel before D5 (`docs/operating-notes.md` §0).
 - **D5 brief diff audit:** Have the winning-backbone family run a short read-only `GO / FIX-FIRST` audit over the final diff plus a quick live playcheck.
 - **Land, release & archive:** Merge cleanly onto the upstream repository (e.g., history-preserving PR, green CI, optional GitHub Pages playable demo), update `projects/<slug>/STATE.md` with a short retrospective, and pack temporary clones into one compact `.zip` via `scripts/archive-pilot-clones.sh --delete-sources`.

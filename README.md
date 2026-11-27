@@ -16,7 +16,7 @@ A lightweight harness for completing scientific research and manuscript reconstr
 ```
 
 - **Specify outcomes and epistemic invariants, not internal process** ([docs/operating-notes.md](docs/operating-notes.md) §0): apply the Bitter Lesson to delegation while respecting where empirical science diverges from software engineering (no scalar automated verifier → Goodhart risk; mechanisms cannot stay in a black box).
-- **Independent conceptions → independent substantial execution → independent written critiques → evidence-led adjudication → fresh communication.**
+- **Independent conceptions → independent substantial execution → independent written critiques → evidence-led adjudication → optional post-validation distillation → fresh communication.**
 - **Strict context isolation:** each scientist works in a curated, single-commit, remote-free clone with no shared discussion board, no peer visibility, and no stale review/commit history.
 - **Keep it small:** plain Markdown, Git and existing desktop/CLI agent harnesses—no orchestration daemon, message bus or framework bloat.
 
@@ -34,7 +34,7 @@ A lightweight harness for completing scientific research and manuscript reconstr
 - [AGENTS.md](AGENTS.md) (`CLAUDE.md`, `GEMINI.md`): adviser role, delegation boundary and isolation rules.
 - [docs/operating-notes.md](docs/operating-notes.md): practical mechanics—curated and tabula-rasa clone isolation, desktop-first launch workflow, CLI fallbacks, compute routing and evidence comparison.
 - [workflows/](workflows/): project-agnostic playbooks (`A-manuscript-rescue.md`, `B-project-rebase.md`, `C-tabula-rasa.md`, `D-game-dev.md`).
-- [prompts/](prompts/): reusable assignment templates (`adviser-start.md`, `A1–A3`, `B1-project-rebase.md`, `C1-tabula-rasa-conception.md`, `BC2-execution.md`, `BC3-cross-critique.md`, `D1–D3`). Adapt each stage to actual outputs rather than running a rigid script.
+- [prompts/](prompts/): reusable assignment templates (`adviser-start.md`, `A1–A3`, `B1-project-rebase.md`, `C1-tabula-rasa-conception.md`, `BC2-execution.md`, `BC3-cross-critique.md`, `D1–D3`, `distillation.md`). Adapt each stage to actual outputs rather than running a rigid script.
 - [scripts/](scripts/): isolated clone builder ([build-isolated-clones.sh](scripts/build-isolated-clones.sh), supporting `--workflow A|B|C|D` and optional hardlinked/cloned read-only `--resources-dir`), primary-writer workspace stager ([stage-writer-workspace.sh](scripts/stage-writer-workspace.sh) for `~/writer/<slug>` with read-only `grist/`), and post-pilot compact archiver/cleaner ([archive-pilot-clones.sh](scripts/archive-pilot-clones.sh)).
 - [projects/](projects/): self-contained per-project folders (`STATE.md`, `brief.md`, plus gitignored `local.json` and `work/`). See [`projects/rc-dates/`](projects/rc-dates/) (Track A pilot), [`projects/openpva/`](projects/openpva/) (Track B pilot), and [`projects/lantern/`](projects/lantern/) (Track D pilot).
 - [context/](context/): origin rationale ([briefing.md](context/briefing.md)) and discussion archive ([conversation.md](context/conversation.md)).

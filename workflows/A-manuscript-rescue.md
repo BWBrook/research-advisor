@@ -1,6 +1,6 @@
 # Workflow A: Manuscript reconstruction (completed science)
 
-**Use when:** Data collection, modelling, validation and an initial manuscript already exist, but incremental revisions have produced dense, defensive or unreadable prose. The remaining problem is scientific communication, not further investigation.
+**Use when:** Data collection, modelling, validation and an initial manuscript already exist, but incremental revisions have produced dense, defensive or unreadable prose. The remaining problem is scientific communication, not further investigation. Track A *already is* communication distillation of validated science (`docs/operating-notes.md` §0); no separate post-A4 distillation phase is needed.
 
 ## What success looks like
 
